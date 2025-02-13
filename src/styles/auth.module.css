@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter', serif;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    background: #e4e4e4;
+    border: solid white;
+    border-radius: 45px;
+    width: 1000px;
+    height: 660px;
+}
+.authContainer {
+    display: flex;
+    width: 100%;
+    max-width: 380px;
+    height: 625px;
+    background: white;
+    border-radius: 45px;
+    margin-left: auto;
+    margin-right: 20px;
+    justify-content: center;
+}
+.authColumn {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 40px;
+    gap: 20px;
+    max-width: 270px;
+    height: 100%;
+    max-height: 580px;
+}
+.authInputContainer {
+    width: 270px;
+    height: 48px;
+    border-radius: 4px;
+    border: solid 1px rgb(17, 17, 19, 0.2);
+    box-sizing: border-box;
+    padding-left: 10px;
+    font-size: 16px;
+}
+.authButton {
+    background: black;
+    border-radius: 4px;
+    width: 270px;
+    height: 48px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+.authButton:hover {
+    background-color: #555;
+}
+.redirectReg {
+    text-align: center;
+    margin-top: auto;
+    color: rgba(0, 0, 0, 0.5);
+}
