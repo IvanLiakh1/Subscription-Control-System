@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "startdev": "webpack serve -c ./config/webpack.config.development.js",
+        "start:dev": "webpack serve -c ./config/webpack.config.development.js",
+        "start:server": "nodemon server/index.js",
         "build": "webpack -c config/webpack.config.production.js",
         "build:dev": "webpack -c config/webpack.config.development.js",
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -25,6 +26,9 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
+        "express": "^4.21.2",
+        "mongodb": "^6.13.0",
+        "mongoose": "^8.10.1",
         "react": "18.3.1",
         "react-dom": "18.3.1",
         "react-router-dom": "^7.1.5"
@@ -38,6 +42,7 @@
         "babel-loader": "^9.2.1",
         "babel-plugin-istanbul": "^7.0.0",
         "css-loader": "^7.1.2",
+        "dotenv": "^16.4.7",
         "eslint": "^8.57.1",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-import": "^2.31.0",
@@ -51,6 +56,7 @@
         "husky": "^8.0.3",
         "istanbul": "^0.4.5",
         "lint-staged": "^15.4.3",
+        "nodemon": "^3.1.9",
         "prettier": "^3.4.2",
         "style-loader": "^4.0.0",
         "webpack": "^5.94.0",
