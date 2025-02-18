@@ -3,7 +3,7 @@ import image from '../assets/AuthBackground.png';
 import * as s from '../styles/auth.module.css';
 function App() {
     return (
-        <>
+        <div className={s.authBody}>
             <div
                 className={s.container}
                 style={{
@@ -14,7 +14,7 @@ function App() {
             >
                 <div className={s.authContainer}>
                     <div className={s.authColumn}>
-                        <h1>Вхід</h1>
+                        <h1>Реєстрація</h1>
                         <div>
                             <p>Nickname</p>
                             <input className={s.authInputContainer} />
@@ -36,7 +36,7 @@ function App() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

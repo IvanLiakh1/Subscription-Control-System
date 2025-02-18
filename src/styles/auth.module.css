@@ -1,12 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-html {
-    height: 100%;
+.authBody {
+    height: 100vh;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Inter', serif;
 }
 
 .container {
