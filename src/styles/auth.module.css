@@ -33,10 +33,10 @@
     align-items: center;
     flex-direction: column;
     margin-top: 40px;
-    gap: 20px;
     max-width: 270px;
     height: 100%;
     max-height: 580px;
+    gap: 20px;
 }
 .authInputContainer {
     width: 270px;
