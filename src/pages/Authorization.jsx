@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import image from '../assets/AuthBackground.png';
 import * as s from '../styles/auth.module.css';
-import axios from 'axios';
+import { login } from '../services/authServices';
+import { useNavigate } from 'react-router-dom';
+
 function App() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:7000/api/login-user', { email, password });
-            console.log(response.data);
+            await login(email, password);
+            navigate('/');
         } catch (err) {
-            console.error(err.response.data);
+            console.error('Помилка авторизації:', err.response?.data || err.message);
         }
     };
     return (

@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import image from '../assets/AuthBackground.png';
 import * as s from '../styles/auth.module.css';
 import '../styles/global.css';
+import { register } from '../services/authServices';
+import { useNavigate } from 'react-router-dom';
 function App() {
     const [nickname, setNickname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(
-                'http://localhost:7000/api/create-user',
-                { nickname, email, password },
-                { withCredentials: true },
-            );
-            console.log(response.data.error);
+            await register(nickname, email, password);
+            navigate('/');
         } catch (err) {
-            console.error(err.response.data);
+            console.error('Помилка реєстрації:', err.response?.data || err.message);
         }
     };
 

@@ -53,6 +53,7 @@ class UserController {
         });
     }
     async checkSession(req, res) {
+        console.log('Session data:', req.session);
         if (req.session.userId) {
             return res.json({ isAuthenticated: true, userId: req.session.userId });
         } else {
