@@ -4,7 +4,7 @@ import * as s from '../styles/auth.module.css';
 import '../styles/global.css';
 import { register } from '../services/authServices';
 import { useNavigate } from 'react-router-dom';
-function App() {
+export default function Registartion() {
     const [nickname, setNickname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -74,5 +74,3 @@ function App() {
         </div>
     );
 }
-
-export default App;

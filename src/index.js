@@ -1,35 +1,56 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
+import { Provider, useDispatch } from 'react-redux';
 import './styles/global.css';
 import Authorization from './pages/Authorization';
 import Registration from './pages/Registration';
 import Subscriptions from './pages/Subscriptions';
-import Layout from './components/Layout';
+import Header from './components/Header/Header';
+import store from './services/store';
+import { checkSession } from './services/authSlice';
+
+const InitApp = () => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(checkSession());
+    }, [dispatch]);
+
+    return (
+        <>
+            <Header />
+            <Outlet />
+        </>
+    );
+};
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <Layout />,
+        element: <InitApp />,
         children: [
             {
-                path: '/subscriptions',
+                path: 'subscriptions',
                 element: <Subscriptions />,
+            },
+            {
+                path: 'login',
+                element: <Authorization />,
+            },
+            {
+                path: 'registration',
+                element: <Registration />,
+            },
+            {
+                path: '*',
+                element: <Navigate to="/" replace />,
             },
         ],
     },
-    {
-        path: '/login',
-        element: <Authorization />,
-    },
-    {
-        path: '/registration',
-        element: <Registration />,
-    },
-    {
-        path: '*',
-        element: <Navigate to="/" replace />,
-    },
 ]);
-
-ReactDOM.createRoot(document.querySelector('#root')).render(<RouterProvider router={router} />);
+// eslint-disable-next-line no-undef
+ReactDOM.createRoot(document.querySelector('#root')).render(
+    <Provider store={store}>
+        <RouterProvider router={router} />
+    </Provider>,
+);

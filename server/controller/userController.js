@@ -53,11 +53,21 @@ class UserController {
         });
     }
     async checkSession(req, res) {
-        console.log('Session data:', req.session);
-        if (req.session.userId) {
-            return res.json({ isAuthenticated: true, userId: req.session.userId });
-        } else {
-            return res.json({ isAuthenticated: false });
+        try {
+            console.log('Session data:', req.session);
+
+            if (req.session.userId) {
+                const user = await User.findById(req.session.userId).select('nickname email history');
+                if (!user) {
+                    return res.json({ isAuthenticated: false });
+                }
+                return res.json({ isAuthenticated: true, user });
+            } else {
+                return res.json({ isAuthenticated: false });
+            }
+        } catch (e) {
+            console.error(e);
+            res.status(500).json({ error: 'Помилка сервера.' });
         }
     }
 }

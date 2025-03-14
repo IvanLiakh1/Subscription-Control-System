@@ -1,12 +1,12 @@
 import React from 'react';
-import Sidebar from './Sidebar.jsx';
+import Header from './Header/Header';
 import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar />
-            <div style={{ flex: 1, padding: '20px' }}>
+            <Header />
+            <div style={{ flex: 1, width: 900, alignItems: 'center', justifyContent: 'center' }}>
                 <Outlet />
             </div>
         </div>
