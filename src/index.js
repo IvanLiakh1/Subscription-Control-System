@@ -9,6 +9,7 @@ import Subscriptions from './pages/Subscriptions';
 import Header from './components/Header/Header';
 import store from './services/store';
 import { checkSession } from './services/authSlice';
+import Main from './pages/Main/Main';
 
 const InitApp = () => {
     const dispatch = useDispatch();
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
             {
                 path: 'registration',
                 element: <Registration />,
+            },
+            {
+                path: '',
+                element: <Main />,
             },
             {
                 path: '*',
