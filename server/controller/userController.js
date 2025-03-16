@@ -4,9 +4,6 @@ class UserController {
     async create(req, res) {
         try {
             const { nickname, email, password } = req.body;
-            if (!email || !password) {
-                return res.status(400).json({ error: "Email і пароль є обов'язковими." });
-            }
             const exist = await User.findOne({ email });
             if (exist) {
                 return res.status(400).json({ error: 'Дана електронна пошта вже використовується.' });
@@ -26,9 +23,7 @@ class UserController {
     async login(req, res) {
         try {
             const { email, password } = req.body;
-            if (!email || !password) {
-                return res.status(400).json({ error: "Email і пароль є обов'язковими." });
-            }
+
             const exist = await User.findOne({ email });
             if (!exist) {
                 return res.status(400).json({ error: 'Не існує запису з такою електронною адресою.' });
