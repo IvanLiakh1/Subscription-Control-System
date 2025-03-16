@@ -2,10 +2,10 @@ import mongoose from 'mongoose';
 
 const subscriptionSchema = new mongoose.Schema(
     {
-        name: { type: String, required: true },
+        title: { type: String, required: true },
         price: { type: Number, required: true },
-        currency: { type: String, default: 'USD' },
-        billingCycle: { type: String, enum: ['daily', 'weekly', 'monthly', 'yearly'], required: true }, // Цикл платежів
+        currency: { type: String, default: 'UAH' },
+        billingCycle: { type: String, enum: ['daily', 'weekly', 'monthly', 'yearly'], required: true },
         nextPaymentDate: { type: Date, required: true },
         startDate: { type: Date, required: true },
         status: { type: String, enum: ['active', 'paused', 'cancelled'], default: 'active' },
@@ -16,4 +16,4 @@ const subscriptionSchema = new mongoose.Schema(
     { timestamps: true },
 );
 
-export const Subscription = mongoose.model('Subscription', subscriptionSchema);
+export default mongoose.model('Subscription', subscriptionSchema);

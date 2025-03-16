@@ -5,6 +5,7 @@ import connectDB from '../Config/db.config.js';
 import MongoStore from 'connect-mongo';
 import userRouter from './routes/userRoutes.js';
 import session from 'express-session';
+import subscriptionRouter from './routes/subscriptionRoutes.js';
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -31,7 +32,8 @@ app.use(
     }),
 );
 
-app.use('/api/', userRouter);
+app.use('/api/user', userRouter);
+app.use('/api/subscription', subscriptionRouter);
 
 const start = async () => {
     try {
