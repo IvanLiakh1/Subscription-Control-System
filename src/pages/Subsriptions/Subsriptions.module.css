@@ -1,0 +1,9 @@
+.gridContent {
+    display: flex;
+    flex-wrap: wrap;
+    width: 800px;
+    height: 600px;
+    gap: 6px 20px;
+    overflow: scroll;
+    overflow-x: hidden;
+}

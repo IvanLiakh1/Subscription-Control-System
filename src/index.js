@@ -5,7 +5,7 @@ import { Provider, useDispatch } from 'react-redux';
 import './styles/global.css';
 import Authorization from './pages/Authorization';
 import Registration from './pages/Registration';
-import Subscriptions from './pages/Subscriptions';
+import Subscriptions from './pages/Subsriptions/Subscriptions';
 import Header from './components/Header/Header';
 import store from './services/store';
 import { checkSession } from './services/authSlice';

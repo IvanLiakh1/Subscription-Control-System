@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const checkSession = createAsyncThunk('/checkSession', async (_, { rejectWithValue }) => {
     try {
-        const response = await axios.get('http://localhost:7000/api/check-session', { withCredentials: true });
+        const response = await axios.get('http://localhost:7000/api/user/check-session', { withCredentials: true });
         console.log(response.data);
         return response.data;
     } catch (error) {
