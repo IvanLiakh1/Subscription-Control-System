@@ -5,16 +5,12 @@ import { Link } from 'react-router-dom';
 export default function Header() {
     const { isAuthenticated, loading } = useSelector((state) => state.auth);
     if (loading) {
-        return (
-            <div className={style.container}>
-                <p>Завантаження...</p>
-            </div>
-        );
+        return <div className={style.container}></div>;
     }
     return (
         <div className={style.container}>
-            <div className="content" style={{ alignItems: 'center' }}>
-                <p style={{ fontWeight: 'bold', fontSize: 24, marginRight: 80, whiteSpace: 'nowrap' }}>
+            <div className="content">
+                <p style={{ fontWeight: 'bold', fontSize: 20, marginRight: 100, whiteSpace: 'nowrap' }}>
                     Subscription Control System
                 </p>
                 <div className={style.nav}>

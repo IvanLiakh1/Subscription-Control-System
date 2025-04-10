@@ -2,6 +2,7 @@ import React from 'react';
 import * as style from './main.module.css';
 import image from '../../assets/main.png';
 import { Link } from 'react-router-dom';
+
 function Main() {
     return (
         <div className="content" style={{ justifyContent: 'space-between' }}>

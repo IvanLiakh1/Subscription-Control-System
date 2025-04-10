@@ -1,47 +1,68 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const checkSession = createAsyncThunk('/checkSession', async (_, { rejectWithValue }) => {
+export const checkSession = createAsyncThunk('auth/checkSession', async (_, { rejectWithValue }) => {
     try {
-        const response = await axios.get('http://localhost:7000/api/user/check-session', { withCredentials: true });
+        const response = await axios.get('http://localhost:7000/api/user/check-session', {
+            withCredentials: true,
+        });
         console.log(response.data);
+
         return response.data;
     } catch (error) {
-        return rejectWithValue(error.response.data);
+        return rejectWithValue(error.response?.data || 'Server error');
     }
 });
 
+const initialState = {
+    user: null,
+    isAuthenticated: false,
+    loading: false,
+    error: null,
+    initialized: false,
+};
+
 const authSlice = createSlice({
     name: 'auth',
-    initialState: {
-        user: null,
-        isAuthenticated: false,
-        loading: true,
-        error: null,
-    },
+    initialState,
     reducers: {
         logout: (state) => {
             state.user = null;
             state.isAuthenticated = false;
+            state.error = null;
+        },
+        setAuthData: (state, action) => {
+            state.user = action.payload.user;
+            state.isAuthenticated = true;
         },
     },
     extraReducers: (builder) => {
         builder
             .addCase(checkSession.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(checkSession.fulfilled, (state, action) => {
                 state.loading = false;
                 state.isAuthenticated = action.payload.isAuthenticated;
                 state.user = action.payload.user || null;
+                state.error = null;
+                state.initialized = true;
             })
             .addCase(checkSession.rejected, (state, action) => {
                 state.loading = false;
                 state.isAuthenticated = false;
+                state.user = null;
                 state.error = action.payload || 'Помилка при перевірці сесії';
+                state.initialized = true;
             });
     },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setAuthData } = authSlice.actions;
 export default authSlice.reducer;
+
+export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
+export const selectAuthLoading = (state) => state.auth.loading;
+export const selectAuthUser = (state) => state.auth.user;
+export const selectAuthInitialized = (state) => state.auth.initialized;

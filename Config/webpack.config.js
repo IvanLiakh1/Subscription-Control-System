@@ -66,6 +66,8 @@ const config = {
         },
     },
     devServer: {
+        host: '0.0.0.0',
+        allowedHosts: 'all',
         historyApiFallback: true,
         open: true,
     },

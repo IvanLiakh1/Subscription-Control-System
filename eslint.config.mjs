@@ -21,6 +21,9 @@ export default [
     rules: {
       "react/react-in-jsx-scope": "off",
       "no-undef": "off",
+      'react/prop-types': "off",
+      "react/jsx-key": "off",
+      'no-unused-vars': 'off',
     },
   },
   pluginJs.configs.recommended,

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/Config/db.config.js;D:/Projects/SCS/Config/webpack.config.development.js;D:/Projects/SCS/Config/webpack.config.js;D:/Projects/SCS/Config/webpack.config.production.js;D:/Projects/SCS/server/controller/userController.js;D:/Projects/SCS/server/models/Subscription.js;D:/Projects/SCS/server/models/User.js;D:/Projects/SCS/server/routes/userRoutes.js;D:/Projects/SCS/server/index.js;D:/Projects/SCS/src/axios/axioInstance.js;D:/Projects/SCS/src/components/Layout.jsx;D:/Projects/SCS/src/components/Sidebar.jsx;D:/Projects/SCS/src/hooks/useAuth.js;D:/Projects/SCS/src/pages/Authorization.jsx;D:/Projects/SCS/src/pages/Main.jsx;D:/Projects/SCS/src/pages/Registration.jsx;D:/Projects/SCS/src/pages/Subscriptions.jsx;D:/Projects/SCS/src/services/authServices.js;D:/Projects/SCS/src/styles/auth.module.css;D:/Projects/SCS/src/styles/global.css;D:/Projects/SCS/src/styles/sidebar.module.css;D:/Projects/SCS/src/index.js;D:/Projects/SCS/templates/index.html;D:/Projects/SCS/babel.config.js;D:/Projects/SCS/package-lock.json;D:/Projects/SCS/package.json" />
+  </component>
+</project>

@@ -26,6 +26,7 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
+        "@hookform/resolvers": "^5.0.1",
         "@reduxjs/toolkit": "^2.6.1",
         "axios": "^1.8.3",
         "bcrypt": "^5.1.1",
@@ -40,8 +41,11 @@
         "mongoose": "^8.10.1",
         "react": "18.3.1",
         "react-dom": "18.3.1",
+        "react-hook-form": "^7.55.0",
+        "react-qr-code": "^2.0.15",
         "react-redux": "^9.2.0",
-        "react-router-dom": "^7.1.5"
+        "react-router-dom": "^7.1.5",
+        "yup": "^1.6.1"
     },
     "devDependencies": {
         "@babel/cli": "^7.26.4",

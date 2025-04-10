@@ -10,7 +10,7 @@ import Header from './components/Header/Header';
 import store from './services/store';
 import { checkSession } from './services/authSlice';
 import Main from './pages/Main/Main';
-
+import RedirectIfAuth from './components/RedirectIfAuth';
 const InitApp = () => {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -35,15 +35,7 @@ const router = createBrowserRouter([
                 element: <Subscriptions />,
             },
             {
-                path: 'login',
-                element: <Authorization />,
-            },
-            {
-                path: 'registration',
-                element: <Registration />,
-            },
-            {
-                path: '',
+                path: '/',
                 element: <Main />,
             },
             {
@@ -51,6 +43,22 @@ const router = createBrowserRouter([
                 element: <Navigate to="/" replace />,
             },
         ],
+    },
+    {
+        path: 'login',
+        element: (
+            <RedirectIfAuth>
+                <Authorization />
+            </RedirectIfAuth>
+        ),
+    },
+    {
+        path: 'registration',
+        element: (
+            <RedirectIfAuth>
+                <Registration />
+            </RedirectIfAuth>
+        ),
     },
 ]);
 // eslint-disable-next-line no-undef

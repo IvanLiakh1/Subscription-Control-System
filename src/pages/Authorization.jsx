@@ -1,59 +1,78 @@
 import React, { useState } from 'react';
-import image from '../assets/AuthBackground.png';
 import * as s from '../styles/auth.module.css';
 import { login } from '../services/authServices';
 import { useNavigate } from 'react-router-dom';
-
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import yupValidation from '../validation/yupValidation';
+import CustomButton from '../components/Button/customButton';
 function App() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const handleLogin = async (e) => {
-        e.preventDefault();
+    const [loading, setLoading] = useState(false);
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(yupValidation.loginSchema),
+    });
+
+    const handleLogin = async (data) => {
         try {
-            await login(email, password);
+            setLoading(true);
+            await login(data.email, data.password);
             navigate('/');
         } catch (err) {
-            console.error('Помилка авторизації:', err.response?.data || err.message);
+            console.log(err, '1231');
+        } finally {
+            setLoading(false);
         }
     };
+
     return (
         <div className={s.authBody}>
-            <div
-                className={s.container}
-                style={{
-                    backgroundImage: `url(${image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                }}
-            >
+            <div className={s.container}>
                 <div className={s.authContainer}>
-                    <form className={s.authColumn} onSubmit={handleLogin}>
+                    <form onSubmit={handleSubmit(handleLogin)} className={s.authColumn}>
                         <h1>Вхід</h1>
                         <div>
                             <p>Email</p>
-                            <input
-                                className={s.authInputContainer}
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                            <Controller
+                                control={control}
+                                name="email"
+                                render={({ field: { onChange, value } }) => (
+                                    <input
+                                        className={s.authInputContainer}
+                                        type="email"
+                                        value={value || ''}
+                                        onChange={onChange}
+                                    />
+                                )}
                             />
+                            {errors.email && <p className="error-text">{errors.email.message}</p>}
                         </div>
                         <div>
                             <p>Password</p>
-                            <input
-                                className={s.authInputContainer}
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                            <Controller
+                                control={control}
+                                name="password"
+                                render={({ field: { onChange, value } }) => (
+                                    <input
+                                        className={s.authInputContainer}
+                                        type="password"
+                                        value={value || ''}
+                                        onChange={onChange}
+                                    />
+                                )}
                             />
+                            {errors.password && <p className="error-text">{errors.password.message}</p>}
                         </div>
-                        <button className={s.authButton} type="submit">
-                            Увійти
-                        </button>
+
+                        <CustomButton type="submit" loading={loading} text="Увійти" />
+
                         <p style={{ fontSize: 20 }}>Або</p>
-                        {/* TODO Google auth*/}
-                        <div className={s.redirectReg} style={{}}>
+                        {/* TODO Google auth */}
+                        <div className={s.redirectReg}>
                             Ще не зареєструвалися? <a href="/registration">Створіть аккаунт</a>
                         </div>
                     </form>
