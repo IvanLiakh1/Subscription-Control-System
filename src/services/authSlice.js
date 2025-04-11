@@ -6,7 +6,6 @@ export const checkSession = createAsyncThunk('auth/checkSession', async (_, { re
         const response = await axios.get('http://localhost:7000/api/user/check-session', {
             withCredentials: true,
         });
-        console.log(response.data);
 
         return response.data;
     } catch (error) {
@@ -43,17 +42,16 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(checkSession.fulfilled, (state, action) => {
+                console.log('checkSession fulfilled:', action.payload);
                 state.loading = false;
                 state.isAuthenticated = action.payload.isAuthenticated;
                 state.user = action.payload.user || null;
-                state.error = null;
                 state.initialized = true;
             })
             .addCase(checkSession.rejected, (state, action) => {
+                console.error('checkSession rejected:', action.payload);
                 state.loading = false;
                 state.isAuthenticated = false;
-                state.user = null;
-                state.error = action.payload || 'Помилка при перевірці сесії';
                 state.initialized = true;
             });
     },

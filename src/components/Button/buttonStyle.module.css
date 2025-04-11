@@ -1,12 +1,19 @@
 .button {
-    background: black;
+    background-color: black;
     border-radius: 4px;
     width: 270px;
     height: 48px;
     color: white;
     font-size: 16px;
     cursor: pointer;
+    outline: none;
+    border: none;
 }
+
+.button:focus {
+    outline: none;
+}
+
 .button:hover {
-    background-color: #555;
+    background-color: #2b2b2b;
 }
