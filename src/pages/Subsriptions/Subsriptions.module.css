@@ -17,3 +17,17 @@
     display: flex;
     gap: 25px;
 }
+.modalWindowChooseButton {
+    background-color: black;
+    color: white;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 10px;
+}
+.modalWindowChooseButtonContainer {
+    display: flex;
+    margin-top: 15px;
+    justify-content: center;
+    align-items: center;
+}

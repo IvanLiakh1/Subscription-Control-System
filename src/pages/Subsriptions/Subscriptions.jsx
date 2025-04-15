@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as style from './Subsriptions.module.css';
 import Card from '../../components/SubscriptionCard/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSubscriptions } from '../../services/subscriptionSlice.js';
 import CustomButton from '../../components/Button/customButton.jsx';
 import CustomDropdown from '../../components/Dropdown/Dropdown.jsx';
+import ModalWindow from '../../components/ModalWindow/ModalWindow.jsx';
 const Subscriptions = () => {
+    const [modalWindowIsOpen, setModalWindowOpen] = useState(false);
     const dispatch = useDispatch();
     const subscriptions = useSelector((state) => state.subscriptions.items);
     const status = useSelector((state) => state.subscriptions.status);
@@ -32,7 +34,17 @@ const Subscriptions = () => {
                         )}
                     </div>
                     <div className={style.sideBar}>
-                        <CustomButton text="Додати дані про підписку" />
+                        <CustomButton text="Додати дані про підписку" onPress={() => setModalWindowOpen(true)} />
+                        {modalWindowIsOpen && (
+                            <ModalWindow isOpen={modalWindowIsOpen} onClose={() => setModalWindowOpen(false)}>
+                                <div className={style.modalWindowChooseButtonContainer}>
+                                    <button className={style.modalWindowChooseButton}>
+                                        Додати підписку автоматично
+                                    </button>
+                                    <button className={style.modalWindowChooseButton}>Додати підписку власноруч</button>
+                                </div>
+                            </ModalWindow>
+                        )}
                         <div style={{ display: 'flex', gap: 10, flexDirection: 'column' }}>
                             <CustomDropdown
                                 data={['Музика', 'Фільми', 'Розваги']}
