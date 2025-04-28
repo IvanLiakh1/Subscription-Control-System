@@ -19,6 +19,7 @@ const initialState = {
     loading: false,
     error: null,
     initialized: false,
+    monobankToken: null,
 };
 
 const authSlice = createSlice({
@@ -29,10 +30,14 @@ const authSlice = createSlice({
             state.user = null;
             state.isAuthenticated = false;
             state.error = null;
+            state.monobankToken = null;
         },
         setAuthData: (state, action) => {
             state.user = action.payload.user;
             state.isAuthenticated = true;
+        },
+        setMonobankToken: (state, action) => {
+            state.monobankToken = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -57,7 +62,7 @@ const authSlice = createSlice({
     },
 });
 
-export const { logout, setAuthData } = authSlice.actions;
+export const { logout, setAuthData, setMonobankToken } = authSlice.actions;
 export default authSlice.reducer;
 
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;

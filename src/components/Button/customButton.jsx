@@ -1,13 +1,20 @@
 import React from 'react';
 import * as style from './buttonStyle.module.css';
-// eslint-disable-next-line react/prop-types
-const CustomButton = ({ type, loading, text, onPress }) => {
+const CustomButton = ({ type, loading, text, onPress, cancel, customStyle }) => {
     return (
         <button
             disabled={loading}
             type={type}
-            className={style.button}
-            style={loading ? { backgroundColor: 'black' } : {}}
+            className={cancel ? style.gray_button : style.black_button}
+            style={
+                customStyle
+                    ? customStyle
+                    : loading
+                      ? cancel
+                          ? { backgroundColor: '#d9d9d9' }
+                          : { backgroundColor: 'black' }
+                      : {}
+            }
             onClick={onPress}
         >
             {loading ? <div className="loader" style={{ margin: 'auto' }}></div> : text}

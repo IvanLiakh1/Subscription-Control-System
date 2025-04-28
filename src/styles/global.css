@@ -4,6 +4,7 @@
 html,
 body {
     font-family: 'Inter', serif;
+    font-weight: 500;
     overflow: hidden;
     height: 100vh;
 }
@@ -74,4 +75,18 @@ body {
 }
 .test {
     background-color: black;
+}
+.buttons_container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.center {
+    align-items: center;
+}
+.modalWindowInputContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
 }

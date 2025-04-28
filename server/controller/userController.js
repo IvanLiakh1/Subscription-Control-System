@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
+import axios from 'axios';
 class UserController {
     async create(req, res) {
         try {
@@ -63,6 +64,38 @@ class UserController {
         } catch (e) {
             console.error(e);
             res.status(500).json({ error: 'Помилка сервера.' });
+        }
+    }
+
+    async checkToken(req, res) {
+        try {
+            const { token } = req.body;
+
+            if (!token) {
+                return res.status(400).json({ error: 'Токен відсутній' });
+            }
+
+            const response = await axios.get('https://api.monobank.ua/personal/client-info', {
+                headers: {
+                    'X-Token': token,
+                },
+            });
+
+            return res.status(200).json({
+                isValid: true,
+                clientInfo: response.data,
+            });
+        } catch (error) {
+            if (error.response) {
+                return res.status(400).json({
+                    isValid: false,
+                    error: 'Недійсний токен',
+                });
+            }
+            console.error('Помилка перевірки токена:', error);
+            return res.status(500).json({
+                error: 'Помилка сервера при перевірці токена',
+            });
         }
     }
 }
