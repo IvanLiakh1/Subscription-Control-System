@@ -10,7 +10,7 @@ import Main from './pages/Main/Main';
 import Header from './components/Header/Header';
 import store from './services/store';
 import { checkSession } from './services/authSlice';
-import CreateSubscriptionManual from './pages/Subsriptions/CreateSubscriptionManual';
+import CreateSubscriptionManual from './pages/Subsriptions/ManuallAdd/CreateSubscriptionManual';
 import CreateSubscriptionAuto from './pages/Subsriptions/CreateSubscriptionAuto';
 import { PrismaneProvider } from '@prismane/core';
 const InitApp = ({ children }) => {
