@@ -90,3 +90,19 @@ body {
     align-items: center;
     gap: 10px;
 }
+.inputContainer {
+    width: 100%;
+    border-radius: 8px;
+    height: 40px;
+}
+.ant-input,
+.ant-picker-input input,
+.ant-input-number-input,
+.ant-select-selector,
+.ant-select-selection-search-input,
+.ant-select-selection-item,
+.ant-select-selection-placeholder {
+    font-family: 'Inter', serif !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+}

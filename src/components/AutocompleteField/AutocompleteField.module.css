@@ -1,0 +1,19 @@
+.optionItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.optionIcon {
+    border-radius: 4px;
+}
+
+.categoryTag {
+    margin-left: auto;
+    font-size: 12px;
+}
+
+.noResults {
+    color: rgba(0, 0, 0, 0.45);
+    padding: 8px;
+}

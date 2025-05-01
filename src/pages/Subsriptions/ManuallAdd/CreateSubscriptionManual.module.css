@@ -1,0 +1,23 @@
+.input_container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.formContainer {
+    width: 370px;
+    max-height: 800px;
+    margin-top: 20px;
+    margin-bottom: 22px;
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+}
+.formContainer .ant-input,
+.formContainer .ant-picker-input input,
+.formContainer .ant-input-number-input,
+.formContainer .ant-select-selector,
+.formContainer .ant-select-selection-search-input,
+.formContainer .ant-select-selection-item,
+.formContainer .ant-select-selection-placeholder {
+    font-family: 'Inter', serif !important;
+}
