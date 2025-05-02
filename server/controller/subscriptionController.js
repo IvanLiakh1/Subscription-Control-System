@@ -3,23 +3,51 @@ import Service from '../models/Services.js';
 class SubscriptionController {
     async addSubscription(req, res) {
         try {
-            const { title, price, currency, billingCycle, nextPaymentDate, startDate, category, notes } = req.body;
+            const userId = req.session.userId;
+            const { title, price, billingCycle, startDate, category, notes } = req.body;
+            if (!userId) {
+                return res.status(401).json({ error: 'Користувач не авторизований' });
+            }
+            if (!title || !price || !billingCycle || !startDate) {
+                return res.status(400).json({ error: 'Заповніть обовʼязкові поля' });
+            }
+            const calculateNextPayment = (start, cycle) => {
+                const date = new Date(start);
+                switch (cycle) {
+                    case 'daily':
+                        date.setDate(date.getDate() + 1);
+                        break;
+                    case 'weekly':
+                        date.setDate(date.getDate() + 7);
+                        break;
+                    case 'monthly':
+                        date.setMonth(date.getMonth() + 1);
+                        break;
+                    case 'yearly':
+                        date.setFullYear(date.getFullYear() + 1);
+                        break;
+                }
+                return date;
+            };
+
             const newSub = new Subscription({
                 title,
                 price,
-                currency,
+                currency: 'UAH',
                 billingCycle,
-                nextPaymentDate,
                 startDate,
+                nextPaymentDate: calculateNextPayment(startDate, billingCycle),
                 category,
                 notes,
-                userId: req.session.userId,
+                userId: userId,
+                status: 'active',
             });
+
             await newSub.save();
-            res.status(200).json({ message: 'Підписку додано' });
+            res.status(201).json(newSub);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Помилка сервера.' });
+            res.status(500).json({ error: 'Помилка сервера' });
         }
     }
     async getAllSubscriptions(req, res) {
