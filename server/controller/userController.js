@@ -98,5 +98,38 @@ class UserController {
             });
         }
     }
+    async getClientInfo(req, res) {
+        try {
+            const { clientId, token } = req.body;
+
+            if (!clientId) {
+                return res.status(400).json({ error: 'Айді клієнта відсутній' });
+            }
+
+            const response = await axios.get('https://api.monobank.ua/personal/statement/', {
+                headers: {
+                    'X-Token': token,
+                },
+                params: {
+                    clientId,
+                },
+            });
+
+            return res.status(200).json({
+                clientInfo: response.data,
+            });
+        } catch (error) {
+            if (error.response) {
+                return res.status(400).json({
+                    isValid: false,
+                    error: 'Недійсний токен',
+                });
+            }
+            console.error('Помилка перевірки токена:', error);
+            return res.status(500).json({
+                error: 'Помилка сервера при перевірці токена',
+            });
+        }
+    }
 }
 export default new UserController();

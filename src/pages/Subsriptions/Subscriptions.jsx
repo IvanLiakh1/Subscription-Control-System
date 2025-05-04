@@ -30,8 +30,6 @@ const Subscriptions = () => {
     const handleTokenCheck = async () => {
         try {
             const response = await checkToken(token);
-            console.log(response.clientInfo);
-
             if (response.isValid) {
                 dispatch(setMonobankToken(token));
                 navigate('/create-auto');

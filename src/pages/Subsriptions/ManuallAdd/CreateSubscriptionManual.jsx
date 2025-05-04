@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import AddSubscriptionTemplate from '../../../components/AddSubscription/AddSubscriptionTemplate';
 import * as style from './CreateSubscriptionManual.module.css';
 import AutocompleteField from '../../../components/AutocompleteField/AutocompleteField';
-import { getServices } from '../../../services/subscriptionServices';
+import { addSubscription, getServices } from '../../../services/subscriptionServices';
 import { DatePicker, Input, InputNumber } from 'antd';
 import moment from 'moment';
 
 const CreateSubscriptionManual = () => {
     const [formData, setFormData] = useState({
-        service: null,
+        title: null,
         category: null,
         billingCycle: null,
         price: null,
@@ -39,7 +39,7 @@ const CreateSubscriptionManual = () => {
 
                 setCategories(uniqueCategories);
             } catch (error) {
-                console.error('Помилка завантаження даних:', error);
+                console.error('Помилка завантаження даних:', error.message);
             } finally {
                 setLoading(false);
             }
@@ -55,8 +55,16 @@ const CreateSubscriptionManual = () => {
         }));
     };
 
+    const handleCreateSubscription = async () => {
+        try {
+            const response = await addSubscription(formData);
+        } catch (error) {
+            console.error('Помилка при додаванні підписки:', error);
+        }
+    };
+
     return (
-        <AddSubscriptionTemplate>
+        <AddSubscriptionTemplate onSubmit={() => handleCreateSubscription()}>
             <h3>Додавання підписки власноруч</h3>
             <div className={style.formContainer}>
                 <AutocompleteField
@@ -67,7 +75,7 @@ const CreateSubscriptionManual = () => {
                         icon: s.logo,
                     }))}
                     onSelect={(value) => {
-                        handleChange('service', value);
+                        handleChange('title', value);
                     }}
                     loading={loading}
                 />

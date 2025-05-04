@@ -9,4 +9,6 @@ userRouter.post('/login-user', ...loginValidation, validate, userController.logi
 userRouter.post('/logout-user', userController.logout);
 userRouter.get('/check-session', userController.checkSession);
 userRouter.post('/check-token', userController.checkToken);
+userRouter.post('/getClientInfo', userController.getClientInfo);
+
 export default userRouter;

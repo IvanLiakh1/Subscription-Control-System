@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 export default function Card({ sub }) {
     return (
         <div className={style.cardContainer}>
-            <img className={style.cardImage} src={image} />
+            <img className={style.cardImage} src={sub.logo} />
             <div className={style.cardContent}>
                 <p style={{ fontSize: 16, color: 'black', marginBottom: 6 }}>{sub.title}</p>
                 <p>Вартість 35$</p>
