@@ -13,6 +13,7 @@ import { checkSession } from './services/authSlice';
 import CreateSubscriptionManual from './pages/Subsriptions/ManuallAdd/CreateSubscriptionManual';
 import CreateSubscriptionAuto from './pages/Subsriptions/CreateSubscriptionAuto';
 import { PrismaneProvider } from '@prismane/core';
+import Spendings from './pages/Spendings/Spendings';
 const InitApp = ({ children }) => {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -79,6 +80,14 @@ const router = createBrowserRouter([
                 element: (
                     <PrivateRoute>
                         <CreateSubscriptionManual />
+                    </PrivateRoute>
+                ),
+            },
+            {
+                path: 'spendings',
+                element: (
+                    <PrivateRoute>
+                        <Spendings />
                     </PrivateRoute>
                 ),
             },

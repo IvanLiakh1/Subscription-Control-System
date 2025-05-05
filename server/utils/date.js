@@ -3,7 +3,6 @@ const calculateNextPayment = (start, cycle, currentDate = new Date()) => {
     if (date <= currentDate) {
         date.setDate(currentDate.getDate());
     }
-
     switch (cycle) {
         case 'daily':
             while (date <= currentDate) {

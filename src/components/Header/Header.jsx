@@ -22,7 +22,7 @@ export default function Header() {
                         <>
                             <Link to="/">Головна</Link>
                             <Link to="/subscriptions">Підписки</Link>
-                            <Link to="/costs">Витрати</Link>
+                            <Link to="/spendings">Витрати</Link>
                             <Link to="/history">Історія</Link>
                         </>
                     )}

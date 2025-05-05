@@ -1,0 +1,7 @@
+.container{
+    display: flex;
+    width: 1000px;
+    justify-content: space-between;
+    font-weight: bold;
+    margin: auto;
+}
