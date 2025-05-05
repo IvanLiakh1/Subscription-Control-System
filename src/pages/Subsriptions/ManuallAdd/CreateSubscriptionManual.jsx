@@ -9,18 +9,19 @@ import moment from 'moment';
 const CreateSubscriptionManual = () => {
     const [formData, setFormData] = useState({
         title: null,
-        category: null,
-        billingCycle: null,
         price: null,
+        billingCycle: null,
         startDate: null,
+        category: null,
         notes: null,
+        logo: null,
     });
     const { TextArea } = Input;
     const [services, setServices] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const billingCycles = [
-        { value: 'daily', label: 'Щомісяця' },
+        { value: 'daily', label: 'Щодня' },
         { value: 'weekly', label: 'Щотижнево' },
         { value: 'monthly', label: 'Щомісяця' },
         { value: 'yearly', label: 'Щорічно' },
@@ -57,6 +58,8 @@ const CreateSubscriptionManual = () => {
 
     const handleCreateSubscription = async () => {
         try {
+            console.log(formData);
+            
             const response = await addSubscription(formData);
         } catch (error) {
             console.error('Помилка при додаванні підписки:', error);
@@ -69,25 +72,34 @@ const CreateSubscriptionManual = () => {
             <div className={style.formContainer}>
                 <AutocompleteField
                     placeholder="Оберіть сервіс"
+                    value={formData.title}
                     options={services.map((s) => ({
                         value: s.name,
                         label: s.name,
                         icon: s.logo,
                     }))}
                     onSelect={(value) => {
-                        handleChange('title', value);
+                        const selectedService = services.find((s) => s.name === value);
+                        if (selectedService) {
+                            handleChange('logo', selectedService.logo);
+                            handleChange('title', selectedService.name);
+                            handleChange('category', selectedService.category);
+                        }
                     }}
                     loading={loading}
+                    
                 />
 
                 <AutocompleteField
                     placeholder="Оберіть категорію"
                     options={categories}
                     onSelect={(value) => handleChange('category', value)}
+                    value={formData.category}
                 />
 
                 <AutocompleteField
                     placeholder="Періодичність оплати"
+                    value={formData.billingCycle}
                     options={billingCycles}
                     onSelect={(value) => handleChange('billingCycle', value)}
                 />

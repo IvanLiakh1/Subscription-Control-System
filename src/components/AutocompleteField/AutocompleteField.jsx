@@ -8,6 +8,7 @@ const AutocompleteField = ({
     onSelect,
     loading = false,
     style: customStyle = {},
+    value,
     ...props
 }) => {
     const renderOption = (item) => ({
@@ -31,6 +32,7 @@ const AutocompleteField = ({
             className={`inputContainer ${customStyle}`}
             options={options.map(renderOption)}
             onSelect={onSelect}
+            value={value}
             filterOption={(inputValue, option) =>
                 option.label.props.children[1].props.children.toLowerCase().includes(inputValue.toLowerCase())
             }

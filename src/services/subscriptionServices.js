@@ -9,7 +9,9 @@ export const getServices = async () => {
     }
 };
 export const addSubscription = async (data) => {
+    
     try {
+        
         const response = await api.post('subscription/add-subscription', data);
         return response.data;
     } catch (error) {
