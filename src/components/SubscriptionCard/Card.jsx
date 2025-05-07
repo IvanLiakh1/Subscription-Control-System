@@ -2,10 +2,8 @@ import React from 'react';
 import * as style from './Card.module.css';
 import { CalendarClock } from 'lucide-react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-
+import { getTimeUntilNextPayment } from '../../Utils/date';
 export default function Card({ sub }) {
-    const daysUntilNextPayment = moment(sub.nextPaymentDate).diff(moment(), 'days');
 
     return (
         <div className={style.cardContainer}>
@@ -15,7 +13,8 @@ export default function Card({ sub }) {
                 <p>Вартість: {sub.price} грн</p>
                 <div>
                     <CalendarClock width={19} />
-                    <p>{daysUntilNextPayment > 0 ? `${daysUntilNextPayment} днів до списання` : 'Списано'}</p>
+                    <p>{getTimeUntilNextPayment(sub.nextPaymentDate, sub.billingCycle)}</p>
+
                 </div>
             </div>
         </div>

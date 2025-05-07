@@ -1,6 +1,6 @@
 import Subscription from '../models/Subscription.js';
 import Service from '../models/Services.js';
-import calculateNextPayment from '../utils/date.js'
+import {calculateNextPaymentDate} from '../utils/date.js';
 class SubscriptionController {
     async addSubscription(req, res) {
         try {
@@ -12,7 +12,7 @@ class SubscriptionController {
             if (!title || !price || !billingCycle || !startDate) {
                 return res.status(400).json({ error: 'Заповніть обовʼязкові поля' });
             }
-            const nextPaymentDate = calculateNextPayment(startDate, billingCycle, new Date());
+            const nextPaymentDate = calculateNextPaymentDate(startDate, billingCycle, new Date());
             
 
             const newSub = new Subscription({

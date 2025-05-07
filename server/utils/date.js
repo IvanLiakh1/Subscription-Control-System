@@ -1,32 +1,46 @@
-const calculateNextPayment = (start, cycle, currentDate = new Date()) => {
-    const date = new Date(start);
-    if (date <= currentDate) {
-        date.setDate(currentDate.getDate());
+function calculateNextPaymentDate(startDate, billingCycle, currentDate = new Date()) {
+    const start = new Date(startDate);
+    const now = new Date(currentDate);
+    start.setHours(0, 0, 0, 0);
+    now.setHours(0, 0, 0, 0);
+    if (start > now) {
+      return start;
     }
-    switch (cycle) {
-        case 'daily':
-            while (date <= currentDate) {
-                date.setDate(date.getDate() + 1); 
-            }
-            break;
-        case 'weekly':
-            while (date <= currentDate) {
-                date.setDate(date.getDate() + 7); 
-            }
-            break;
-        case 'monthly':
-            while (date <= currentDate) {
-                date.setMonth(date.getMonth() + 1); 
-            }
-            break;
-        case 'yearly':
-            while (date <= currentDate) {
-                date.setFullYear(date.getFullYear() + 1); 
-            }
-            break;
-        default:
-            throw new Error('Невірний тип періодичності');
+    let nextDate = new Date(start);
+    switch (billingCycle) {
+      case 'daily':
+        while (nextDate <= now) {
+          nextDate.setDate(nextDate.getDate() + 1);
+        }
+        break;
+  
+      case 'weekly':
+        while (nextDate <= now) {
+          nextDate.setDate(nextDate.getDate() + 7);
+        }
+        break;
+  
+      case 'monthly':
+        while (nextDate <= now) {
+          nextDate.setMonth(nextDate.getMonth() + 1);
+          const originalDay = start.getDate();
+          if (nextDate.getDate() < originalDay) {
+            nextDate.setDate(0); 
+          }
+        }
+        break;
+  
+      case 'yearly':
+        while (nextDate <= now) {
+          nextDate.setFullYear(nextDate.getFullYear() + 1);
+        }
+        break;
+  
+      default:
+        throw new Error('Невірний тип періодичності оплати');
     }
-    return date;
-};
-export default calculateNextPayment;
+  
+    return nextDate;
+}
+
+export { calculateNextPaymentDate };
