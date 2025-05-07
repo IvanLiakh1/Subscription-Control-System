@@ -1,14 +1,6 @@
 import mongoose from 'mongoose';
 
 const spendingsSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    price: { type: Number, required: true },
-    frequency: {
-        type: String,
-        enum: ['daily', 'weekly', 'monthly', 'yearly'],
-        required: true,
-    },
-    category: { type: String },
     date: {
         type: Date,
         required: true,
@@ -21,6 +13,11 @@ const spendingsSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        required: true,
+    },
+    subscriptionId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subscription',
         required: true,
     },
 });
