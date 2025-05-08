@@ -9,12 +9,18 @@ export const getServices = async () => {
     }
 };
 export const addSubscription = async (data) => {
-    
     try {
-        
         const response = await api.post('subscription/add-subscription', data);
         return response.data;
     } catch (error) {
         throw new Error('Помилка при додаванні підписки');
+    }
+};
+export const getSpendings = async () => {
+    try {
+        const response = await api.get('subscription/getAllSpendings');
+        return response.data;
+    } catch (error) {
+        throw new Error('Помилка при отриманні даних');
     }
 };

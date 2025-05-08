@@ -132,7 +132,6 @@ class SubscriptionController {
             if (category) {
                 filter.category = category;
             }
-            // Фільтр по даті
             if (startDate || endDate) {
                 filter.date = {};
                 if (startDate) {
@@ -170,9 +169,7 @@ class SubscriptionController {
         } catch (error) {
             console.error('Помилка при отриманні витрат:', error);
             return res.status(500).json({
-                success: false,
                 error: 'Помилка сервера',
-                details: process.env.NODE_ENV === 'development' ? error.message : undefined,
             });
         }
     }

@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import * as styles from './dropdown.module.css';
 
-const CustomDropdown = ({ data, placeholder = 'Оберіть опцію', onSelect }) => {
+const CustomDropdown = ({ data, placeholder = 'Оберіть опцію', onSelect, label }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState(null);
     const dropdownRef = useRef(null);
@@ -28,7 +28,7 @@ const CustomDropdown = ({ data, placeholder = 'Оберіть опцію', onSel
 
     return (
         <div>
-            <p className={styles.label}>Сортувати за</p>
+            {label && <p className={styles.label}>{label}</p>}
             <div className={styles.dropdown} ref={dropdownRef}>
                 <div className={styles.header} onClick={toggleDropdown}>
                     {selected || placeholder}

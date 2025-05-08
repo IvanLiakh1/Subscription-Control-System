@@ -1,0 +1,19 @@
+.buttonContainer > button {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.62);
+    font-weight: bold;
+    cursor: pointer;
+}
+.buttonContainer {
+    display: flex;
+    gap: 10px;
+}
+.container {
+    display: flex;
+    flex-direction: row;
+}
+.topRow {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
