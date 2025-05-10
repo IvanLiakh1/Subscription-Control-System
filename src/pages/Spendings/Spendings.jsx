@@ -25,7 +25,7 @@ const Spendings = () => {
             <div className="content" style={{ flexDirection: 'column' }}>
                 <p>Витрати</p>
                 <div>
-                    <SpendingCharts />
+                    <SpendingCharts spendings={spendings} />
                     <InfoList spendings={spendings} />
                 </div>
             </div>

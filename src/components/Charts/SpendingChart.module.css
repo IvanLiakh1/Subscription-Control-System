@@ -3,6 +3,11 @@
     color: rgba(0, 0, 0, 0.62);
     font-weight: bold;
     cursor: pointer;
+    padding: 0px 2px 0px 2px;
+}
+.buttonContainer > button:hover {
+    background-color: whitesmoke;
+    border-radius: 5px;
 }
 .buttonContainer {
     display: flex;
@@ -10,10 +15,13 @@
 }
 .container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 .topRow {
     display: flex;
     width: 100%;
     justify-content: space-between;
+}
+.active {
+    color: black !important;
 }

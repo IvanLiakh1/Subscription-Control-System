@@ -173,5 +173,29 @@ class SubscriptionController {
             });
         }
     }
+    async createSpending(req, res) {
+        try {
+            const userId = req.session.userId;
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    error: 'Користувач не авторизований',
+                });
+            }
+            const { date } = req.body;
+            await Spendings.create({
+                date: new Date(date),
+                userId: userId,
+                subscriptionId: '681b4cf971544093cde6a47b',
+            });
+            return res.status(200).json({
+                success: true,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+            });
+        }
+    }
 }
 export default new SubscriptionController();
