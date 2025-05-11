@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import { notification } from 'antd';
 
 const UserSchema = new mongoose.Schema({
     nickname: {
@@ -27,6 +28,14 @@ const UserSchema = new mongoose.Schema({
             },
         ],
         default: [],
+    },
+    notification: {
+        type: Boolean,
+        default: true,
+    },
+    futureNotification: {
+        type: Boolean,
+        default: true,
     },
 });
 

@@ -10,5 +10,7 @@ userRouter.post('/logout-user', userController.logout);
 userRouter.get('/check-session', userController.checkSession);
 userRouter.post('/check-token', userController.checkToken);
 userRouter.post('/getClientInfo', userController.getClientInfo);
+userRouter.patch('/editUser', userController.editUser);
+userRouter.get('/getUser', userController.getUser);
 
 export default userRouter;

@@ -131,5 +131,47 @@ class UserController {
             });
         }
     }
+    async editUser(req, res) {
+        try {
+            const userId = req.session.userId;
+            if (!userId) {
+                return res.status(401).json({ error: 'Користувач не авторизований' });
+            }
+            const { notification } = req.body;
+
+            await User.updateOne(
+                { _id: userId },
+                {
+                    $set: {
+                        notification: notification.notification,
+                        futureNotification: notification.futureNotification,
+                    },
+                },
+            );
+            return res.status(200).json({
+                isSuccess: true,
+                message: 'Налаштування користувача оновлено',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                error: 'Помилка при оновленні налаштувань користувача',
+            });
+        }
+    }
+    async getUser(req, res) {
+        try {
+            const userId = req.session.userId;
+            if (!userId) {
+                return res.status(401).json({ error: 'Користувач не авторизований' });
+            }
+            const user = await User.findById(userId);
+            res.status(200).json({
+                user: user,
+            });
+        } catch (error) {
+            console.error('Помилка отримання користувача:', error);
+            return res.status(500).json({ error: 'Помилка сервера' });
+        }
+    }
 }
 export default new UserController();
