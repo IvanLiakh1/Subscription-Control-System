@@ -13,6 +13,10 @@ class SubscriptionController {
             if (!title || !price || !billingCycle || !startDate) {
                 return res.status(400).json({ error: 'Заповніть обовʼязкові поля' });
             }
+            const list = await Subscription.find({ userId, title });
+            if (list.length > 0) {
+                return res.status(400).json({ error: 'Підписка на даний сервіс вже існує' });
+            }
             const nextPaymentDate = calculateNextPaymentDate(startDate, billingCycle, new Date());
 
             const newSub = new Subscription({
@@ -188,6 +192,37 @@ class SubscriptionController {
                 userId: userId,
                 subscriptionId: '681b4cf971544093cde6a47b',
             });
+            return res.status(200).json({
+                success: true,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+            });
+        }
+    }
+    async editSubscription(req, res) {
+        try {
+            const userId = req.session.userId;
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    error: 'Користувач не авторизований',
+                });
+            }
+            const { price, notes, billingCycle, id } = req.body;
+            console.log(price, notes, id);
+
+            await Subscription.updateOne(
+                { _id: id, userId },
+                {
+                    $set: {
+                        price,
+                        notes,
+                        billingCycle,
+                    },
+                },
+            );
             return res.status(200).json({
                 success: true,
             });

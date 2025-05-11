@@ -24,3 +24,13 @@ export const getSpendings = async () => {
         throw new Error('Помилка при отриманні даних');
     }
 };
+export const editSubscriptions = async (data) => {
+    try {
+        console.log(data);
+
+        const response = await api.patch('subscription/edit-subscription', data);
+        return response.data;
+    } catch (error) {
+        throw new Error('Помилка при оновленні даних про підписку', error);
+    }
+};

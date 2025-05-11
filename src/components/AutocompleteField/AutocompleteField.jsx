@@ -1,5 +1,5 @@
 import React from 'react';
-import { AutoComplete, Spin, Tag } from 'antd';
+import { AutoComplete, Select, Spin, Tag } from 'antd';
 import * as style from './AutocompleteField.module.css';
 
 const AutocompleteField = ({
@@ -9,6 +9,7 @@ const AutocompleteField = ({
     loading = false,
     style: customStyle = {},
     value,
+
     ...props
 }) => {
     const renderOption = (item) => ({
@@ -27,12 +28,13 @@ const AutocompleteField = ({
     });
 
     return (
-        <AutoComplete
+        <Select
             placeholder={placeholder}
             className={`inputContainer ${customStyle}`}
             options={options.map(renderOption)}
             onSelect={onSelect}
             value={value}
+            onChange={onSelect}
             filterOption={(inputValue, option) =>
                 option.label.props.children[1].props.children.toLowerCase().includes(inputValue.toLowerCase())
             }

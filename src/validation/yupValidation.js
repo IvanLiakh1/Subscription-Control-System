@@ -18,7 +18,17 @@ const loginSchema = Yup.object().shape({
         .max(25, 'Пароль не може перевищувати 25 символів')
         .required("Обов'язкове поле"),
 });
+const subscriptionSchema = Yup.object().shape({
+    price: Yup.number()
+        .required('Вартість є обов’язковою')
+        .min(0, 'Вартість не може бути меншою за 0')
+        .typeError('Введіть число')
+        .max(10000, 'Вартість не може перевищувати 10000'),
+    billingCycle: Yup.string().required('Періодичність оплати є обов’язковою'),
+    notes: Yup.string().max(100, 'Замітки не можуть перевищувати 100 символів'),
+});
 export default {
     registrationSchema,
     loginSchema,
+    subscriptionSchema,
 };
