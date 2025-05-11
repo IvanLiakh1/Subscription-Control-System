@@ -9,5 +9,7 @@ subscriptionRouter.get('/getService', SubscriptionController.getServices);
 subscriptionRouter.post('/processPayments', SubscriptionController.processSubscriptionsPayments);
 subscriptionRouter.post('/addSpending', SubscriptionController.createSpending);
 subscriptionRouter.patch('/edit-subscription', SubscriptionController.editSubscription);
+subscriptionRouter.patch('/changeStatusSubscription', SubscriptionController.changeStatusSubscription);
+subscriptionRouter.delete('/deleteSubscription', SubscriptionController.deleteSubscription);
 
 export default subscriptionRouter;

@@ -34,3 +34,19 @@ export const editSubscriptions = async (data) => {
         throw new Error('Помилка при оновленні даних про підписку', error);
     }
 };
+export const changeStatusSubscription = async (id, status) => {
+    try {
+        const response = await api.patch('subscription/changeStatusSubscription', { id: id, status: status });
+        return response.data;
+    } catch (error) {
+        throw new Error('Помилка при оновленні даних про підписку', error);
+    }
+};
+export const deleteSubscription = async (id) => {
+    try {
+        const response = await api.delete('subscription/deleteSubscription', { data: { id } });
+        return response.data;
+    } catch (error) {
+        throw new Error('Помилка при видаленні даних про підписку', error);
+    }
+};

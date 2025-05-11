@@ -229,5 +229,54 @@ class SubscriptionController {
             });
         }
     }
+    async changeStatusSubscription(req, res) {
+        try {
+            const userId = req.session.userId;
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    error: 'Користувач не авторизований',
+                });
+            }
+            const { id, status } = req.body;
+            await Subscription.updateOne(
+                { _id: id, userId },
+                {
+                    $set: {
+                        status: status,
+                    },
+                },
+            );
+            return res.status(200).json({
+                success: true,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+            });
+        }
+    }
+    async deleteSubscription(req, res) {
+        try {
+            const userId = req.session.userId;
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    error: 'Користувач не авторизований',
+                });
+            }
+            const { id } = req.body;
+
+            await Spendings.deleteMany({ subscriptionId: id, userId });
+            await Subscription.deleteOne({ _id: id, userId });
+            return res.status(200).json({
+                success: true,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+            });
+        }
+    }
 }
 export default new SubscriptionController();

@@ -1,15 +1,19 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { useLocation } from 'react-router-dom';
 import AddSubscriptionTemplate from '../../../components/AddSubscription/AddSubscriptionTemplate';
-import { DatePicker, Input, InputNumber } from 'antd';
+import { DatePicker, Input, InputNumber, FloatButton, Popconfirm, Button } from 'antd';
 import AutocompleteField from '../../../components/AutocompleteField/AutocompleteField';
 import moment from 'moment';
-import { editSubscriptions } from '../../../services/subscriptionServices';
+import {
+    changeStatusSubscription,
+    deleteSubscription,
+    editSubscriptions,
+} from '../../../services/subscriptionServices';
 import yupValidation from '../../../validation/yupValidation';
 import { useNavigate } from 'react-router-dom';
+import { Pause, Trash2, CirclePlay } from 'lucide-react';
 const EditSubscription = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -41,6 +45,22 @@ const EditSubscription = () => {
             navigate('/subscriptions');
         } catch (error) {
             console.error('Помилка при редагуванні підписки:', error);
+        }
+    };
+    const handleDelete = async () => {
+        try {
+            await deleteSubscription(subscription._id);
+            navigate('/subscriptions');
+        } catch (error) {
+            console.error('Помилка при видаленні підписки:', error);
+        }
+    };
+    const handleChangeStatus = async () => {
+        try {
+            await changeStatusSubscription(subscription._id, subscription.status === 'active' ? 'paused' : 'active');
+            navigate('/subscriptions');
+        } catch (error) {
+            console.error('Помилка при видаленні підписки:', error);
         }
     };
 
@@ -79,6 +99,7 @@ const EditSubscription = () => {
                             placeholder="Періодичність оплати"
                             options={billingCycles}
                             onSelect={(value) => field.onChange(value)}
+                            disabled={subscription.status === 'paused'}
                         />
                     )}
                 />
@@ -95,6 +116,7 @@ const EditSubscription = () => {
                             className="inputContainer"
                             size="large"
                             min={0}
+                            disabled={subscription.status === 'paused'}
                         />
                     )}
                 />
@@ -112,11 +134,42 @@ const EditSubscription = () => {
                             showCount
                             maxLength={100}
                             autoSize={{ minRows: 3 }}
+                            disabled={subscription.status === 'paused'}
                         />
                     )}
                 />
             </div>
             {errors.notes && <p className="error-text">{errors.notes.message}</p>}
+            <div style={{ display: 'flex', gap: 10 }}>
+                {' '}
+                <Popconfirm
+                    title={subscription.status === 'active' ? 'Деактивувати підписку?' : 'Активувати підписку?'}
+                    okText="Так"
+                    cancelText="Ні"
+                    onConfirm={handleChangeStatus}
+                >
+                    <Button
+                        type="default"
+                        danger={subscription.status === 'active'}
+                        style={{ borderRadius: '50%', width: 56, height: 56 }}
+                        icon={subscription.status === 'active' ? <Pause /> : <CirclePlay />}
+                    />
+                </Popconfirm>
+                <Popconfirm
+                    title="Видалити підписку назавжди?"
+                    onConfirm={handleDelete}
+                    okText="Видалити"
+                    cancelText="Скасувати"
+                    okButtonProps={{ danger: true }}
+                >
+                    <Button
+                        type="primary"
+                        danger
+                        style={{ borderRadius: '50%', width: 56, height: 56 }}
+                        icon={<Trash2 />}
+                    />
+                </Popconfirm>
+            </div>
         </AddSubscriptionTemplate>
     );
 };
