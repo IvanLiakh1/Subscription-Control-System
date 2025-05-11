@@ -107,3 +107,12 @@ body::-webkit-scrollbar {
     font-weight: 500 !important;
     font-size: 14px !important;
 }
+.formContainer {
+    width: 370px;
+    max-height: 800px;
+    margin-top: 20px;
+    margin-bottom: 22px;
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+}

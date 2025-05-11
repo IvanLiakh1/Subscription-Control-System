@@ -20,10 +20,10 @@ export default function Header() {
                         </Link>
                     ) : (
                         <>
-                            <Link to="/">Головна</Link>
                             <Link to="/subscriptions">Підписки</Link>
                             <Link to="/spendings">Витрати</Link>
                             <Link to="/history">Історія</Link>
+                            <Link to="/settings">Налаштування</Link>
                         </>
                     )}
                 </div>

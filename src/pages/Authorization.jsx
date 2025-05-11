@@ -23,7 +23,7 @@ function App() {
             await login(data.email, data.password);
             navigate('/');
         } catch (err) {
-            console.log(err, '1231');
+            console.log(err);
         } finally {
             setLoading(false);
         }
