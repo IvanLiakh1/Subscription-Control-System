@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import './styles/global.css';
 import Authorization from './pages/Authorization';
@@ -9,19 +9,27 @@ import Subscriptions from './pages/Subsriptions/Subscriptions';
 import Main from './pages/Main/Main';
 import Header from './components/Header/Header';
 import store from './services/store';
-import { checkSession } from './services/authSlice';
+import { checkSession, selectAuthInitialized, selectIsAuthenticated } from './services/authSlice';
 import CreateSubscriptionManual from './pages/Subsriptions/ManuallAdd/CreateSubscriptionManual';
-import CreateSubscriptionAuto from './pages/Subsriptions/CreateSubscriptionAuto';
-import { PrismaneProvider } from '@prismane/core';
+import CreateSubscriptionAuto from './pages/Subsriptions/AutoAdd/AutoAdd.jsx';
+import { PrismaneProvider, Loader, Flex } from '@prismane/core';
 import Spendings from './pages/Spendings/Spendings';
+import EditSubscription from './pages/Subsriptions/EditSubscription/EditSubscription.jsx';
+import Settings from './pages/Settings/Settings.jsx';
 const InitApp = ({ children }) => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(checkSession());
-    }, [dispatch]);
+    }, []);
 
     return children;
 };
+
+const LoadingScreen = () => (
+    <Flex w="100vw" h="100vh" align="center" justify="center">
+        <h1>Завантаження...</h1>
+    </Flex>
+);
 
 const LayoutWithHeader = () => (
     <>
@@ -30,20 +38,24 @@ const LayoutWithHeader = () => (
     </>
 );
 
-const RedirectIfAuth = ({ children }) => {
-    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-    const loading = useSelector((state) => state.auth.loading);
+const AuthWrapper = ({ children }) => {
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const initialized = useSelector(selectAuthInitialized);
+    const location = useLocation();
 
-    if (loading) return <div>Завантаження...</div>;
-    return isAuthenticated ? <Navigate to="/" replace /> : children;
+    if (!initialized) return <LoadingScreen />;
+
+    return isAuthenticated ? children : <Navigate to="/login" replace state={{ from: location }} />;
 };
 
-const PrivateRoute = ({ children }) => {
-    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-    const loading = useSelector((state) => state.auth.loading);
+const PublicWrapper = ({ children }) => {
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const initialized = useSelector(selectAuthInitialized);
+    const location = useLocation();
 
-    if (loading) return <div>Завантаження...</div>;
-    return isAuthenticated ? children : <Navigate to="/login" replace />;
+    if (!initialized) return <LoadingScreen />;
+
+    return isAuthenticated ? <Navigate to="/" replace state={{ from: location }} /> : children;
 };
 
 const router = createBrowserRouter([
@@ -51,45 +63,39 @@ const router = createBrowserRouter([
         path: '/',
         element: (
             <InitApp>
-                <LayoutWithHeader />
+                <AuthWrapper>
+                    <LayoutWithHeader />
+                </AuthWrapper>
             </InitApp>
         ),
         children: [
             {
-                path: '/',
+                index: true,
                 element: <Main />,
             },
             {
                 path: 'subscriptions',
-                element: (
-                    <PrivateRoute>
-                        <Subscriptions />
-                    </PrivateRoute>
-                ),
+                element: <Subscriptions />,
             },
             {
                 path: 'create-auto',
-                element: (
-                    <PrivateRoute>
-                        <CreateSubscriptionAuto />
-                    </PrivateRoute>
-                ),
+                element: <CreateSubscriptionAuto />,
             },
             {
                 path: 'create-manual',
-                element: (
-                    <PrivateRoute>
-                        <CreateSubscriptionManual />
-                    </PrivateRoute>
-                ),
+                element: <CreateSubscriptionManual />,
             },
             {
                 path: 'spendings',
-                element: (
-                    <PrivateRoute>
-                        <Spendings />
-                    </PrivateRoute>
-                ),
+                element: <Spendings />,
+            },
+            {
+                path: 'edit-subscription',
+                element: <EditSubscription />,
+            },
+            {
+                path: 'settings',
+                element: <Settings />,
             },
         ],
     },
@@ -97,9 +103,9 @@ const router = createBrowserRouter([
         path: 'login',
         element: (
             <InitApp>
-                <RedirectIfAuth>
+                <PublicWrapper>
                     <Authorization />
-                </RedirectIfAuth>
+                </PublicWrapper>
             </InitApp>
         ),
     },
@@ -107,9 +113,9 @@ const router = createBrowserRouter([
         path: 'registration',
         element: (
             <InitApp>
-                <RedirectIfAuth>
+                <PublicWrapper>
                     <Registration />
-                </RedirectIfAuth>
+                </PublicWrapper>
             </InitApp>
         ),
     },
@@ -119,7 +125,6 @@ const router = createBrowserRouter([
     },
 ]);
 
-// eslint-disable-next-line no-undef
 ReactDOM.createRoot(document.querySelector('#root')).render(
     <PrismaneProvider>
         <Provider store={store}>
