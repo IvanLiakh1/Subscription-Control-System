@@ -6,6 +6,7 @@ import MongoStore from 'connect-mongo';
 import userRouter from './routes/userRoutes.js';
 import session from 'express-session';
 import subscriptionRouter from './routes/subscriptionRoutes.js';
+import './Jobs/Payments.js';
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 const app = express();
