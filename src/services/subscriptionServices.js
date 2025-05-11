@@ -16,9 +16,9 @@ export const addSubscription = async (data) => {
         throw new Error('Помилка при додаванні підписки');
     }
 };
-export const getSpendings = async () => {
+export const getSpendings = async (id) => {
     try {
-        const response = await api.get('subscription/getAllSpendings');
+        const response = await api.get('subscription/getAllSpendings', { params: { subscriptionId: id } });
         return response.data;
     } catch (error) {
         throw new Error('Помилка при отриманні даних');

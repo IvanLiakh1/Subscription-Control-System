@@ -5,20 +5,13 @@ import AutocompleteField from '../../../components/AutocompleteField/Autocomplet
 import { addSubscription, getServices } from '../../../services/subscriptionServices';
 import { DatePicker, Input, InputNumber } from 'antd';
 import moment from 'moment';
+import yupValidation from '../../../validation/yupValidation';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const CreateSubscriptionManual = () => {
-    const [formData, setFormData] = useState({
-        title: null,
-        price: null,
-        billingCycle: null,
-        startDate: null,
-        category: null,
-        notes: null,
-        logo: null,
-    });
     const { TextArea } = Input;
     const [services, setServices] = useState([]);
-    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const billingCycles = [
         { value: 'daily', label: 'Щодня' },
@@ -26,6 +19,22 @@ const CreateSubscriptionManual = () => {
         { value: 'monthly', label: 'Щомісяця' },
         { value: 'yearly', label: 'Щорічно' },
     ];
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        defaultValues: {
+            price: null,
+            billingCycle: null,
+            notes: null,
+            title: null,
+            category: null,
+            logo: null,
+            startDate: null,
+        },
+        resolver: yupResolver(yupValidation.subscriptionSchema),
+    });
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -33,12 +42,6 @@ const CreateSubscriptionManual = () => {
             try {
                 const servicesResponse = await getServices();
                 setServices(servicesResponse);
-                const uniqueCategories = [...new Set(servicesResponse.map((s) => s.category))].map((category) => ({
-                    value: category,
-                    label: category.charAt(0).toUpperCase() + category.slice(1),
-                }));
-
-                setCategories(uniqueCategories);
             } catch (error) {
                 console.error('Помилка завантаження даних:', error.message);
             } finally {
@@ -49,87 +52,110 @@ const CreateSubscriptionManual = () => {
         fetchInitialData();
     }, []);
 
-    const handleChange = (field, value) => {
-        setFormData((prev) => ({
-            ...prev,
-            [field]: value,
-        }));
-    };
-
-    const handleCreateSubscription = async () => {
+    const handleCreateSubscription = async (data) => {
         try {
-            console.log(formData);
-            
-            const response = await addSubscription(formData);
+            await addSubscription(data);
         } catch (error) {
             console.error('Помилка при додаванні підписки:', error);
         }
     };
 
     return (
-        <AddSubscriptionTemplate onSubmit={() => handleCreateSubscription()}>
+        <AddSubscriptionTemplate onSubmit={handleSubmit(handleCreateSubscription)} submitTitle={'Додати підписку'}>
             <h3>Додавання підписки власноруч</h3>
-            <div className={style.formContainer}>
-                <AutocompleteField
-                    placeholder="Оберіть сервіс"
-                    value={formData.title}
-                    options={services.map((s) => ({
-                        value: s.name,
-                        label: s.name,
-                        icon: s.logo,
-                    }))}
-                    onSelect={(value) => {
-                        const selectedService = services.find((s) => s.name === value);
-                        if (selectedService) {
-                            handleChange('logo', selectedService.logo);
-                            handleChange('title', selectedService.name);
-                            handleChange('category', selectedService.category);
-                        }
-                    }}
-                    loading={loading}
-                    
+            <div style={{ width: '100%' }}>
+                <Controller
+                    name="title"
+                    control={control}
+                    render={({ field }) => (
+                        <AutocompleteField
+                            {...field}
+                            placeholder="Оберіть сервіс"
+                            options={services.map((s) => ({
+                                value: s.name,
+                                label: s.name,
+                                icon: s.logo,
+                            }))}
+                            onSelect={(value) => {
+                                const selectedService = services.find((s) => s.name === value);
+                                if (selectedService) {
+                                    field.onChange(value);
+                                    field.onBlur();
+                                }
+                            }}
+                            loading={loading}
+                        />
+                    )}
+                />
+                {errors.title && <p className="error-text">{errors.title.message}</p>}
+            </div>
+            <div style={{ width: '100%' }}>
+                <Controller
+                    name="billingCycle"
+                    control={control}
+                    render={({ field }) => (
+                        <AutocompleteField
+                            {...field}
+                            placeholder="Періодичність оплати"
+                            options={billingCycles}
+                            onSelect={(value) => field.onChange(value)}
+                        />
+                    )}
+                />
+                {errors.billingCycle && <p className="error-text">{errors.billingCycle.message}</p>}
+            </div>
+            <div style={{ width: '100%' }}>
+                <Controller
+                    name="price"
+                    control={control}
+                    render={({ field }) => (
+                        <InputNumber
+                            {...field}
+                            placeholder="Вартість (грн)"
+                            className="inputContainer"
+                            size="large"
+                            min={0}
+                            onChange={(value) => field.onChange(value)}
+                        />
+                    )}
+                />
+                {errors.price && <p className="error-text">{errors.price.message}</p>}
+            </div>
+            <div style={{ width: '100%' }}>
+                <Controller
+                    name="startDate"
+                    control={control}
+                    render={({ field }) => (
+                        <DatePicker
+                            {...field}
+                            placeholder="Дата активації підписки"
+                            value={field.value ? moment(field.value) : null}
+                            onChange={(date, dateString) => field.onChange(dateString)}
+                            style={{ width: '100%' }}
+                            disabledDate={(current) => current && current > moment().endOf('day')}
+                            className="inputContainer"
+                        />
+                    )}
                 />
 
-                <AutocompleteField
-                    placeholder="Оберіть категорію"
-                    options={categories}
-                    onSelect={(value) => handleChange('category', value)}
-                    value={formData.category}
+                {errors.startDate && <p className="error-text">{errors.startDate.message}</p>}
+            </div>
+            <div style={{ width: '100%' }}>
+                <Controller
+                    name="notes"
+                    control={control}
+                    render={({ field }) => (
+                        <TextArea
+                            {...field}
+                            placeholder="Замітки"
+                            className="inputContainer"
+                            showCount
+                            maxLength={100}
+                            autoSize={{ minRows: 3 }}
+                        />
+                    )}
                 />
-
-                <AutocompleteField
-                    placeholder="Періодичність оплати"
-                    value={formData.billingCycle}
-                    options={billingCycles}
-                    onSelect={(value) => handleChange('billingCycle', value)}
-                />
-
-                <InputNumber
-                    placeholder="Вартість (грн)"
-                    value={formData.price}
-                    onChange={(value) => handleChange('price', value)}
-                    className="inputContainer"
-                    size="large"
-                    min={0}
-                />
-
-                <DatePicker
-                    placeholder="Дата активації підписки"
-                    value={formData.startDate ? moment(formData.startDate) : null}
-                    onChange={(date, dateString) => handleChange('startDate', dateString)}
-                    style={{ width: '100%' }}
-                    disabledDate={(current) => current && current > moment().endOf('day')}
-                    className="inputContainer"
-                />
-                <TextArea
-                    placeholder="Замітки"
-                    value={formData.notes}
-                    onChange={(e) => handleChange('notes', e.target.value)}
-                    className="inputContainer"
-                    showCount
-                    maxLength={100}
-                    autoSize={{ minRows: 3 }}
-                />
+                {errors.notes && <p className="error-text">{errors.notes.message}</p>}
             </div>
         </AddSubscriptionTemplate>
     );

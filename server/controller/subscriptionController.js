@@ -2,6 +2,7 @@ import Subscription from '../models/Subscription.js';
 import Service from '../models/Services.js';
 import Spendings from '../models/Spendings.js';
 import { calculateNextPaymentDate } from '../utils/date.js';
+import mongoose from 'mongoose';
 class SubscriptionController {
     async addSubscription(req, res) {
         try {
@@ -77,10 +78,7 @@ class SubscriptionController {
             const subscriptions = await Subscription.find({
                 userId,
                 status: 'active',
-                nextPaymentDate: {
-                    $gte: todayUTC,
-                    $lt: tomorrowUTC,
-                },
+                nextPaymentDate: { $lte: todayUTC },
             });
             console.log(subscriptions);
             for (const sub of subscriptions) {
@@ -121,8 +119,7 @@ class SubscriptionController {
                     error: 'Користувач не авторизований',
                 });
             }
-            const { subscriptionId } = req.params;
-            const { startDate, endDate, category } = req.query;
+            const { startDate, endDate, category, subscriptionId } = req.query;
             const filter = { userId };
             if (subscriptionId) {
                 if (!mongoose.Types.ObjectId.isValid(subscriptionId)) {
