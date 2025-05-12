@@ -6,6 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import yupValidation from '../validation/yupValidation';
 import CustomButton from '../components/Button/customButton';
+import GoogleButton from '../components/GoogleButton/GoogleButton.jsx';
 function App() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -71,7 +72,7 @@ function App() {
                         <CustomButton type="submit" loading={loading} text="Увійти" />
 
                         <p style={{ fontSize: 20 }}>Або</p>
-                        <a href="http://localhost:7000/api/user/auth/google">Увійти через Google</a>
+                        <GoogleButton isLogin />
 
                         <div className={s.redirectReg}>
                             Ще не зареєструвалися? <a href="/registration">Створіть аккаунт</a>

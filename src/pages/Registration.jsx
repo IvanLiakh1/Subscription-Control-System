@@ -7,6 +7,7 @@ import CustomButton from '../components/Button/customButton';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import yupValidation from '../validation/yupValidation';
+import GoogleButton from '../components/GoogleButton/GoogleButton';
 export default function Registartion() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -86,7 +87,7 @@ export default function Registartion() {
                         </div>
                         <CustomButton type="submit" loading={loading} text="Зареєструватися" />
                         <p style={{ fontSize: 20 }}>Або</p>
-                        {/* TODO Google auth*/}
+                        <GoogleButton />
                         <div className={s.redirectReg} style={{}}>
                             Вже зареєстровані? <a href="/login">Увійти</a>
                         </div>

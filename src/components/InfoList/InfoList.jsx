@@ -42,16 +42,22 @@ const InfoList = ({ spendings }) => {
                     <div className={style.headerCell}>Вартість</div>
                     <div className={style.headerCell}>Дата</div>
                 </div>
-                {currentItems.map((item) => (
-                    <div key={item._id} className={style.tableRow}>
-                        <div className={style.tableCell}>{item.subscriptionId?.title || item.title}</div>
-                        <div className={style.tableCell}>
-                            {getPaymentType(item.frequency || item.subscriptionId?.billingCycle)}
+                {currentItems.length > 0 ? (
+                    currentItems.map((item) => (
+                        <div key={item._id} className={style.tableRow}>
+                            <div className={style.tableCell}>{item.subscriptionId?.title || item.title}</div>
+                            <div className={style.tableCell}>
+                                {getPaymentType(item.frequency || item.subscriptionId?.billingCycle)}
+                            </div>
+                            <div className={style.tableCell}>{item.subscriptionId?.price} ₴</div>
+                            <div className={style.tableCell}>{formatDate(item.date)}</div>
                         </div>
-                        <div className={style.tableCell}>{item.subscriptionId?.price} ₴</div>
-                        <div className={style.tableCell}>{formatDate(item.date)}</div>
+                    ))
+                ) : (
+                    <div style={{ alignItems: 'center', display: 'flex' }}>
+                        <p style={{ margin: 'auto', padding: 10 }}>Список порожній</p>
                     </div>
-                ))}
+                )}
             </div>
             <div className={style.pagination}>
                 {totalPages > 1 && (
