@@ -1,3 +1,4 @@
+import { Sun } from 'lucide-react';
 import Subscription from '../models/Subscription.js';
 import User from '../models/User.js';
 import { sendReminderEmail, sendNotificationEmail } from '../services/MailService.js';
@@ -15,7 +16,7 @@ const checkAndSendReminders = async () => {
     for (const sub of subscriptions) {
         const user = await User.findById(sub.userId);
         const formattedDate = new Date(sub.nextPaymentDate).toLocaleDateString('uk-UA');
-        if (user?.email && user.futureNotification === true) {
+        if (user?.email && user.futureNotification === true && sub.notification === true) {
             await sendReminderEmail({
                 to: user.email,
                 serviceName: sub.title,
@@ -28,7 +29,7 @@ const checkAndSendReminders = async () => {
 const sendNotification = async (sub) => {
     const formattedDate = new Date(sub.nextPaymentDate).toLocaleDateString('uk-UA');
     const user = await User.findById(sub.userId);
-    if (user?.email && user.notification === true) {
+    if (user?.email && user.notification === true && sub.notification === true) {
         await sendNotificationEmail({
             to: user.email,
             serviceName: sub.title,

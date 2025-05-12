@@ -14,12 +14,12 @@ const subscriptionSchema = new mongoose.Schema(
         },
         startDate: {
             type: Date,
-            get: (date) => date.toISOString().split('T')[0] 
-          },
-          nextPaymentDate: {
+            get: (date) => date.toISOString().split('T')[0],
+        },
+        nextPaymentDate: {
             type: Date,
-            get: (date) => date.toISOString().split('T')[0]
-          },
+            get: (date) => date.toISOString().split('T')[0],
+        },
         status: {
             type: String,
             enum: ['active', 'paused', 'cancelled'],
@@ -31,6 +31,10 @@ const subscriptionSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
+        },
+        notification: {
+            type: Boolean,
+            default: true,
         },
     },
     {

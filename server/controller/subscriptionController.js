@@ -207,8 +207,7 @@ class SubscriptionController {
                     error: 'Користувач не авторизований',
                 });
             }
-            const { price, notes, billingCycle, id } = req.body;
-            console.log(price, notes, id);
+            const { price, notes, billingCycle, notification, id } = req.body;
 
             await Subscription.updateOne(
                 { _id: id, userId },
@@ -217,6 +216,7 @@ class SubscriptionController {
                         price,
                         notes,
                         billingCycle,
+                        notification,
                     },
                 },
             );

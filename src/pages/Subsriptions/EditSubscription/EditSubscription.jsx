@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLocation } from 'react-router-dom';
 import AddSubscriptionTemplate from '../../../components/AddSubscription/AddSubscriptionTemplate';
-import { DatePicker, Input, InputNumber, FloatButton, Popconfirm, Button } from 'antd';
+import { DatePicker, Input, InputNumber, Popconfirm, Button, notification } from 'antd';
 import AutocompleteField from '../../../components/AutocompleteField/AutocompleteField';
 import moment from 'moment';
 import {
@@ -14,10 +14,13 @@ import {
 import yupValidation from '../../../validation/yupValidation';
 import { useNavigate } from 'react-router-dom';
 import { Pause, Trash2, CirclePlay } from 'lucide-react';
+import { Checkbox, message } from 'antd';
+
 const EditSubscription = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const subscription = location.state?.sub;
+
     const { TextArea } = Input;
     const billingCycles = [
         { value: 'daily', label: 'Щодня' },
@@ -35,6 +38,7 @@ const EditSubscription = () => {
             price: subscription.price,
             billingCycle: subscription.billingCycle,
             notes: subscription.notes,
+            notification: subscription.notification,
         },
         resolver: yupResolver(yupValidation.editSubscriptionSchema),
     });
@@ -140,8 +144,24 @@ const EditSubscription = () => {
                 />
             </div>
             {errors.notes && <p className="error-text">{errors.notes.message}</p>}
+            <div style={{ width: '100%' }}>
+                <Controller
+                    name="notification"
+                    control={control}
+                    render={({ field }) => (
+                        <Checkbox
+                            {...field}
+                            checked={field.value}
+                            onChange={(e) => {
+                                field.onChange(e.target.checked);
+                            }}
+                        >
+                            Сповіщення на пошту
+                        </Checkbox>
+                    )}
+                />
+            </div>
             <div style={{ display: 'flex', gap: 10 }}>
-                {' '}
                 <Popconfirm
                     title={subscription.status === 'active' ? 'Деактивувати підписку?' : 'Активувати підписку?'}
                     okText="Так"

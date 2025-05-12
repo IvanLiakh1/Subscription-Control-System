@@ -39,6 +39,7 @@ const editSubscriptionSchema = Yup.object().shape({
         .max(10000, 'Вартість не може перевищувати 10000'),
     billingCycle: Yup.string().required('Періодичність оплати є обов’язковою'),
     notes: Yup.string().max(100, 'Замітки не можуть перевищувати 100 символів').nullable(),
+    notification: Yup.boolean(),
 });
 export default {
     registrationSchema,

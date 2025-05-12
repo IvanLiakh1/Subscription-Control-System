@@ -1,0 +1,54 @@
+.settingsContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+.settingsGroup {
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.settingItem {
+    margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.settingItem label {
+    font-weight: 500;
+    color: #333;
+}
+
+.buttonsRow {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.dangerZone {
+    width: 100%;
+    padding: 20px;
+    background: #fff8f8;
+    border-radius: 8px;
+    border: 1px solid #ffcccc;
+}
+
+.warningText {
+    color: #d32f2f;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+input[type='number'] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-width: 200px;
+}
