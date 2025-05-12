@@ -1,6 +1,6 @@
 import Subscription from '../models/Subscription.js';
 import User from '../models/User.js';
-import { sendReminderEmail } from '../services/MailService.js';
+import { sendReminderEmail, sendNotificationEmail } from '../services/MailService.js';
 const checkAndSendReminders = async () => {
     const now = new Date();
     const tomorrow = new Date(now);
@@ -15,7 +15,7 @@ const checkAndSendReminders = async () => {
     for (const sub of subscriptions) {
         const user = await User.findById(sub.userId);
         const formattedDate = new Date(sub.nextPaymentDate).toLocaleDateString('uk-UA');
-        if (user?.email) {
+        if (user?.email && user.futureNotification === true) {
             await sendReminderEmail({
                 to: user.email,
                 serviceName: sub.title,
@@ -25,4 +25,22 @@ const checkAndSendReminders = async () => {
         }
     }
 };
-export default checkAndSendReminders;
+const sendNotification = async (sub) => {
+    const formattedDate = new Date(sub.nextPaymentDate).toLocaleDateString('uk-UA');
+    const user = await User.findById(sub.userId);
+    if (user?.email && user.notification === true) {
+        await sendNotificationEmail({
+            to: user.email,
+            serviceName: sub.title,
+            price: sub.price,
+            totalSpent: sub.totalSpent,
+            nextPaymentDate: formattedDate,
+        });
+    }
+};
+const SubscriptionService = {
+    checkAndSendReminders,
+    sendNotification,
+};
+
+export default SubscriptionService;

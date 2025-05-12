@@ -1,8 +1,10 @@
 import Subscription from '../models/Subscription.js';
 import Service from '../models/Services.js';
 import Spendings from '../models/Spendings.js';
+import User from '../models/User.js';
 import { calculateNextPaymentDate } from '../utils/date.js';
 import mongoose from 'mongoose';
+import SubscriptionService from '../services/Reminder.js';
 class SubscriptionController {
     async addSubscription(req, res) {
         try {
@@ -80,7 +82,6 @@ class SubscriptionController {
                 status: 'active',
                 nextPaymentDate: { $lte: todayUTC },
             });
-            console.log(subscriptions);
             for (const sub of subscriptions) {
                 const nextDate = calculateNextPaymentDate(sub.startDate, sub.billingCycle, now);
                 await Subscription.updateOne(
@@ -97,9 +98,8 @@ class SubscriptionController {
                     userId: userId,
                     subscriptionId: sub._id,
                 });
-                console.log(
-                    `Списано ${sub.price} UAH за ${sub.title}. Наступний платіж: ${nextDate.toISOString().split('T')[0]}`,
-                );
+
+                await SubscriptionService.sendNotification(sub);
             }
             res.status(200).json({
                 message: 'Успішно',
