@@ -50,14 +50,19 @@ class UserController {
     }
     async checkSession(req, res) {
         try {
-            console.log('Session data:', req.session);
+            const userId = req.session.userId || (req.user && req.user._id);
 
-            if (req.session.userId) {
-                const user = await User.findById(req.session.userId).select('nickname email history');
+            if (userId) {
+                const user = await User.findById(userId).select('nickname email notification futureNotification');
                 if (!user) {
                     return res.json({ isAuthenticated: false });
                 }
-                return res.json({ isAuthenticated: true, user });
+                return res.json({
+                    isAuthenticated: true,
+                    user,
+                    notification: user.notification,
+                    futureNotification: user.futureNotification,
+                });
             } else {
                 return res.json({ isAuthenticated: false });
             }
@@ -171,6 +176,24 @@ class UserController {
         } catch (error) {
             console.error('Помилка отримання користувача:', error);
             return res.status(500).json({ error: 'Помилка сервера' });
+        }
+    }
+    async getCurrentUser(req, res) {
+        try {
+            const userId = req.session.userId || (req.user && req.user._id);
+            if (!userId) {
+                return res.status(401).json({ error: 'Користувач не авторизований' });
+            }
+
+            const user = await User.findById(userId).select('-password');
+            if (!user) {
+                return res.status(404).json({ error: 'Користувач не знайдений' });
+            }
+
+            res.status(200).json({ user });
+        } catch (error) {
+            console.error('Помилка отримання користувача:', error);
+            res.status(500).json({ error: 'Помилка сервера' });
         }
     }
 }

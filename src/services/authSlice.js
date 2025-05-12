@@ -3,17 +3,22 @@ import axios from 'axios';
 
 export const checkSession = createAsyncThunk('auth/checkSession', async (_, { rejectWithValue }) => {
     try {
-        const [sessionResponse, userResponse] = await Promise.all([
-            axios.get('http://localhost:7000/api/user/check-session', { withCredentials: true }),
-            axios.get('http://localhost:7000/api/user/getUser', { withCredentials: true }),
-        ]);
+        const response = await axios.get('http://localhost:7000/api/user/check-session', {
+            withCredentials: true,
+        });
 
-        return {
-            ...sessionResponse.data,
-            user: userResponse.data.user,
-            notification: userResponse.data.user?.notification || false,
-            futureNotification: userResponse.data.user?.futureNotification || false,
-        };
+        if (response.data.isAuthenticated) {
+            const userResponse = await axios.get('http://localhost:7000/api/user/getUser', {
+                withCredentials: true,
+            });
+            return {
+                ...response.data,
+                user: userResponse.data.user,
+                notification: userResponse.data.user?.notification || false,
+                futureNotification: userResponse.data.user?.futureNotification || false,
+            };
+        }
+        return response.data;
     } catch (error) {
         return rejectWithValue(error.response?.data || 'Server error');
     }

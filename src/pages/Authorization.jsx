@@ -71,7 +71,8 @@ function App() {
                         <CustomButton type="submit" loading={loading} text="Увійти" />
 
                         <p style={{ fontSize: 20 }}>Або</p>
-                        {/* TODO Google auth */}
+                        <a href="http://localhost:7000/api/user/auth/google">Увійти через Google</a>
+
                         <div className={s.redirectReg}>
                             Ще не зареєструвалися? <a href="/registration">Створіть аккаунт</a>
                         </div>

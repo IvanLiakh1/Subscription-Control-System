@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
     },
     history: {
@@ -29,6 +29,11 @@ const UserSchema = new mongoose.Schema({
         ],
         default: [],
     },
+    isGoogleAuth: {
+        type: Boolean,
+        default: false,
+    },
+    googleId: String,
     notification: {
         type: Boolean,
         default: true,

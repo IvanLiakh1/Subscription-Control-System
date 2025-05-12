@@ -6,7 +6,9 @@ import MongoStore from 'connect-mongo';
 import userRouter from './routes/userRoutes.js';
 import session from 'express-session';
 import subscriptionRouter from './routes/subscriptionRoutes.js';
+import passport from 'passport';
 import './Jobs/Payments.js';
+import '../Config/passport.js';
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -16,6 +18,8 @@ app.use(
     cors({
         origin: 'http://localhost:8080',
         credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
     }),
 );
 
@@ -29,12 +33,15 @@ app.use(
             maxAge: 1000 * 60 * 60 * 24,
             httpOnly: true,
             secure: false,
+            sameSite: 'lax',
         },
     }),
 );
 
 app.use('/api/user', userRouter);
 app.use('/api/subscription', subscriptionRouter);
+app.use(passport.initialize());
+app.use(passport.session());
 
 const start = async () => {
     try {
