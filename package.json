@@ -19,7 +19,8 @@
         "*.{js,jsx,ts,tsx,json,css,scss,md}": [
             "prettier --write",
             "eslint --fix"
-        ]
+        ],
+        "!dist/**": "echo 'skipped'"
     },
     "keywords": [],
     "author": "",
