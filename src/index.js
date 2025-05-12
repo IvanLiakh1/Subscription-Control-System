@@ -16,6 +16,7 @@ import { PrismaneProvider, Loader, Flex } from '@prismane/core';
 import Spendings from './pages/Spendings/Spendings';
 import EditSubscription from './pages/Subsriptions/EditSubscription/EditSubscription.jsx';
 import Settings from './pages/Settings/Settings.jsx';
+import History from './pages/History/History.jsx';
 const InitApp = ({ children }) => {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
             {
                 path: 'settings',
                 element: <Settings />,
+            },
+            {
+                path: 'history',
+                element: <History />,
             },
         ],
     },
