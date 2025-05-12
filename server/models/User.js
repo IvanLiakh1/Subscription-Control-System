@@ -19,16 +19,7 @@ const UserSchema = new mongoose.Schema({
         required: false,
         trim: true,
     },
-    history: {
-        type: [
-            {
-                action: { type: String, required: true },
-                serviceName: { type: String, required: true },
-                date: { type: Date, default: Date.now, required: true },
-            },
-        ],
-        default: [],
-    },
+
     isGoogleAuth: {
         type: Boolean,
         default: false,

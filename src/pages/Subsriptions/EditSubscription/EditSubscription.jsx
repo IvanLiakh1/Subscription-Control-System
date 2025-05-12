@@ -39,6 +39,7 @@ const EditSubscription = () => {
             billingCycle: subscription.billingCycle,
             notes: subscription.notes,
             notification: subscription.notification,
+            title: subscription.title,
         },
         resolver: yupResolver(yupValidation.editSubscriptionSchema),
     });
@@ -53,7 +54,7 @@ const EditSubscription = () => {
     };
     const handleDelete = async () => {
         try {
-            await deleteSubscription(subscription._id);
+            await deleteSubscription(subscription._id, subscription.title);
             navigate('/subscriptions');
         } catch (error) {
             console.error('Помилка при видаленні підписки:', error);
@@ -61,10 +62,14 @@ const EditSubscription = () => {
     };
     const handleChangeStatus = async () => {
         try {
-            await changeStatusSubscription(subscription._id, subscription.status === 'active' ? 'paused' : 'active');
+            await changeStatusSubscription(
+                subscription._id,
+                subscription.status === 'active' ? 'paused' : 'active',
+                subscription.title,
+            );
             navigate('/subscriptions');
         } catch (error) {
-            console.error('Помилка при видаленні підписки:', error);
+            console.error('Помилка при зміні статусу підписки:', error);
         }
     };
 

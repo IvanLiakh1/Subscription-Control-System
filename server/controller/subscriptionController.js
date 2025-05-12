@@ -1,7 +1,7 @@
 import Subscription from '../models/Subscription.js';
 import Service from '../models/Services.js';
 import Spendings from '../models/Spendings.js';
-import User from '../models/User.js';
+import History from '../models/History.js';
 import { calculateNextPaymentDate } from '../utils/date.js';
 import mongoose from 'mongoose';
 import SubscriptionService from '../services/Reminder.js';
@@ -37,6 +37,15 @@ class SubscriptionController {
             });
 
             await newSub.save();
+
+            const newHistory = new History({
+                userId: userId,
+                action: 'Створено нову підписку',
+                serviceName: title,
+                serviceIcon: logo,
+            });
+
+            await newHistory.save();
             res.status(201).json(newSub);
         } catch (error) {
             console.error(error);
@@ -207,7 +216,7 @@ class SubscriptionController {
                     error: 'Користувач не авторизований',
                 });
             }
-            const { price, notes, billingCycle, notification, id } = req.body;
+            const { price, notes, billingCycle, notification, title, id } = req.body;
 
             await Subscription.updateOne(
                 { _id: id, userId },
@@ -220,6 +229,13 @@ class SubscriptionController {
                     },
                 },
             );
+            const newHistory = new History({
+                userId: userId,
+                action: 'Оновлено дані підписки',
+                serviceName: title,
+            });
+
+            await newHistory.save();
             return res.status(200).json({
                 success: true,
             });
@@ -238,7 +254,7 @@ class SubscriptionController {
                     error: 'Користувач не авторизований',
                 });
             }
-            const { id, status } = req.body;
+            const { id, status, title } = req.body;
             await Subscription.updateOne(
                 { _id: id, userId },
                 {
@@ -247,6 +263,13 @@ class SubscriptionController {
                     },
                 },
             );
+            const newHistory = new History({
+                userId: userId,
+                action: 'Змінено статус',
+                serviceName: title,
+            });
+
+            await newHistory.save();
             return res.status(200).json({
                 success: true,
             });
@@ -265,10 +288,17 @@ class SubscriptionController {
                     error: 'Користувач не авторизований',
                 });
             }
-            const { id } = req.body;
+            const { id, title } = req.body;
 
             await Spendings.deleteMany({ subscriptionId: id, userId });
             await Subscription.deleteOne({ _id: id, userId });
+            const newHistory = new History({
+                userId: userId,
+                action: 'Видалено підписку',
+                serviceName: title,
+            });
+
+            await newHistory.save();
             return res.status(200).json({
                 success: true,
             });
