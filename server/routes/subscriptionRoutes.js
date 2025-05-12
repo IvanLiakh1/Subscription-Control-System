@@ -11,5 +11,6 @@ subscriptionRouter.post('/addSpending', SubscriptionController.createSpending);
 subscriptionRouter.patch('/edit-subscription', SubscriptionController.editSubscription);
 subscriptionRouter.patch('/changeStatusSubscription', SubscriptionController.changeStatusSubscription);
 subscriptionRouter.delete('/deleteSubscription', SubscriptionController.deleteSubscription);
+subscriptionRouter.delete('/clearSpendings', SubscriptionController.clearSpendings);
 
 export default subscriptionRouter;

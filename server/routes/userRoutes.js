@@ -13,6 +13,7 @@ userRouter.post('/getClientInfo', userController.getClientInfo);
 userRouter.patch('/editUser', userController.editUser);
 userRouter.get('/getUser', userController.getUser);
 userRouter.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+userRouter.delete('/clearUser', userController.deleteUser);
 
 userRouter.get(
     '/auth/google/callback',

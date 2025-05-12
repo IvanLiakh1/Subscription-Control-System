@@ -308,5 +308,19 @@ class SubscriptionController {
             });
         }
     }
+    async clearSpendings(req, res) {
+        try {
+            const userId = req.session.userId;
+            if (!userId) {
+                return res.status(401).json({ error: 'Користувач не авторизований' });
+            }
+            const deleted = await Spendings.deleteMany({ userId });
+            await Subscription.updateMany({ userId }, { $set: { totalSpent: 0 } });
+            res.status(200).json({ message: 'Витрати очищено та totalSpent скинуто', deleted });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Помилка сервера' });
+        }
+    }
 }
 export default new SubscriptionController();

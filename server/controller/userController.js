@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import axios from 'axios';
+import History from '../models/History.js';
 class UserController {
     async create(req, res) {
         try {
@@ -193,6 +194,21 @@ class UserController {
             res.status(200).json({ user });
         } catch (error) {
             console.error('Помилка отримання користувача:', error);
+            res.status(500).json({ error: 'Помилка сервера' });
+        }
+    }
+    async deleteUser(req, res) {
+        try {
+            const userId = req.session.userId;
+            if (!userId) {
+                return res.status(401).json({ error: 'Користувач не авторизований' });
+            }
+            await Spendings.deleteMany({ userId });
+            await Subscription.deleteMany({ userId });
+            await History.deleteMany({ userId });
+            res.status(200).json({ message: 'Дані користувача вилучено', deleted });
+        } catch (error) {
+            console.error(error);
             res.status(500).json({ error: 'Помилка сервера' });
         }
     }
