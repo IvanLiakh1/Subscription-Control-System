@@ -1,24 +1,36 @@
 .start_now {
-    width: 500px;
     height: 300px;
-    border-radius: 25px;
-    background: rgba(77, 77, 77, 0.1);
     padding: 20px 15px;
     font-family: 'Bricolage Grotesque', sans-serif;
     font-size: 20px;
     font-weight: bold;
     margin-right: 20px;
     line-height: 30px;
+
+    justify-content: space-between;
 }
 .img {
-    height: 340px !important;
+    height: 300px !important;
 }
 .redirect {
     border: 2px solid black;
-    border-radius: 50px;
+    border-radius: 20px;
     padding: 15px;
     font-size: 18px;
     text-decoration: none;
     color: black;
     word-spacing: 2px;
+    user-select: none;
+}
+.upperText {
+    font-size: 50px;
+    line-height: 72px;
+    margin-bottom: 10px;
+}
+.bottomText {
+    color: #374151;
+    font-size: 18px;
+    font-family: 'Inter', serif;
+    margin-bottom: 15px;
+    font-weight: lighter;
 }

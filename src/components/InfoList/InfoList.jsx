@@ -49,7 +49,7 @@ const InfoList = ({ spendings }) => {
                             <div className={style.tableCell}>
                                 {getPaymentType(item.frequency || item.subscriptionId?.billingCycle)}
                             </div>
-                            <div className={style.tableCell}>{item.subscriptionId?.price} ₴</div>
+                            <div className={style.tableCell}>{item.subscriptionId?.price}.00₴</div>
                             <div className={style.tableCell}>{formatDate(item.date)}</div>
                         </div>
                     ))

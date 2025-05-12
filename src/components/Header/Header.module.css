@@ -6,6 +6,7 @@
     font-family: 'Bricolage Grotesque', sans-serif;
     align-items: center;
     margin-bottom: 18px;
+    user-select: none;
 }
 .nav {
     width: 200px;
@@ -18,4 +19,5 @@
     text-decoration: none;
     color: rgb(0, 0, 0);
     font-size: 18px;
+    user-select: none;
 }

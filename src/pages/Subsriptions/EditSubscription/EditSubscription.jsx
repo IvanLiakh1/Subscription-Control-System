@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLocation } from 'react-router-dom';
 import AddSubscriptionTemplate from '../../../components/AddSubscription/AddSubscriptionTemplate';
-import { DatePicker, Input, InputNumber, Popconfirm, Button, notification } from 'antd';
+import { DatePicker, Input, InputNumber, Popconfirm, Button, Checkbox } from 'antd';
 import AutocompleteField from '../../../components/AutocompleteField/AutocompleteField';
 import moment from 'moment';
 import {
@@ -14,7 +14,6 @@ import {
 import yupValidation from '../../../validation/yupValidation';
 import { useNavigate } from 'react-router-dom';
 import { Pause, Trash2, CirclePlay } from 'lucide-react';
-import { Checkbox, message } from 'antd';
 
 const EditSubscription = () => {
     const navigate = useNavigate();
