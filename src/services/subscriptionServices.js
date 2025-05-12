@@ -54,3 +54,11 @@ export const deleteSubscription = async (id, title) => {
         throw new Error('Помилка при видаленні даних про підписку', error);
     }
 };
+export const clearSpendings = async () => {
+    try {
+        const response = await api.delete('subscription/clearSpendings');
+        return response.data;
+    } catch (error) {
+        throw new Error('Помилка при видаленні історії витрат', error);
+    }
+};

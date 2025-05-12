@@ -2,6 +2,8 @@ import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import axios from 'axios';
 import History from '../models/History.js';
+import Spendings from '../models/Spendings.js';
+import Subscription from '../models/Subscription.js';
 class UserController {
     async create(req, res) {
         try {
@@ -44,11 +46,13 @@ class UserController {
     async logout(req, res) {
         req.session.destroy((err) => {
             if (err) {
-                return res.status(401).json({ error: 'Помилка при виході.' });
+                return res.status(500).json({ error: 'Помилка при виході.' });
             }
-            res.status(201).json({ message: 'Вихід успішний.' });
+            res.clearCookie('connect.sid');
+            res.status(200).json({ message: 'Вихід успішний.' });
         });
     }
+
     async checkSession(req, res) {
         try {
             const userId = req.session.userId || (req.user && req.user._id);
@@ -203,10 +207,22 @@ class UserController {
             if (!userId) {
                 return res.status(401).json({ error: 'Користувач не авторизований' });
             }
-            await Spendings.deleteMany({ userId });
-            await Subscription.deleteMany({ userId });
-            await History.deleteMany({ userId });
-            res.status(200).json({ message: 'Дані користувача вилучено', deleted });
+
+            const spendingsDeleted = await Spendings.deleteMany({ userId });
+            const subscriptionsDeleted = await Subscription.deleteMany({ userId });
+            const historyDeleted = await History.deleteMany({ userId });
+            const userDeleted = await User.findByIdAndDelete(userId);
+
+            req.session.destroy(() => {
+                res.clearCookie('connect.sid');
+                res.status(200).json({
+                    message: 'Користувача та його дані видалено',
+                    spendingsDeleted,
+                    subscriptionsDeleted,
+                    historyDeleted,
+                    userDeleted,
+                });
+            });
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Помилка сервера' });

@@ -23,6 +23,14 @@ export const checkSession = createAsyncThunk('auth/checkSession', async (_, { re
         return rejectWithValue(error.response?.data || 'Server error');
     }
 });
+export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { dispatch, rejectWithValue }) => {
+    try {
+        await axios.post('http://localhost:7000/api/user/logout-user', {}, { withCredentials: true });
+        dispatch(logout());
+    } catch (error) {
+        return rejectWithValue(error.response?.data || 'Logout error');
+    }
+});
 
 const initialState = {
     user: null,
