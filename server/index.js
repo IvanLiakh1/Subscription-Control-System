@@ -6,6 +6,7 @@ import MongoStore from 'connect-mongo';
 import userRouter from './routes/userRoutes.js';
 import session from 'express-session';
 import subscriptionRouter from './routes/subscriptionRoutes.js';
+import historyRouter from './routes/historyRoutes.js';
 import passport from 'passport';
 import './Jobs/Payments.js';
 import '../Config/passport.js';
@@ -40,6 +41,8 @@ app.use(
 
 app.use('/api/user', userRouter);
 app.use('/api/subscription', subscriptionRouter);
+app.use('/api/history', historyRouter);
+
 app.use(passport.initialize());
 app.use(passport.session());
 
