@@ -15,7 +15,7 @@ import path from 'path';
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 const app = express();
-app.use(express.static(path.join(__dirname, '../dist')));
+//app.use(express.static(path.join(__dirname, '../dist')));
 app.use(express.json());
 app.use(
     cors({
@@ -35,7 +35,7 @@ app.use(
         cookie: {
             maxAge: 1000 * 60 * 60 * 24,
             httpOnly: true,
-            secure: true,
+            secure: false,
             sameSite: 'lax',
         },
     }),
