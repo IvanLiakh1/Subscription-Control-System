@@ -17,6 +17,7 @@ import Spendings from './pages/Spendings/Spendings';
 import EditSubscription from './pages/Subsriptions/EditSubscription/EditSubscription.jsx';
 import Settings from './pages/Settings/Settings.jsx';
 import History from './pages/History/History.jsx';
+import toast, { Toaster } from 'react-hot-toast';
 const InitApp = ({ children }) => {
     const dispatch = useDispatch();
     useEffect(() => {

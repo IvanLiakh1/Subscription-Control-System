@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import * as style from '../../components/InfoList/InfoList.module.css';
 import * as style2 from './History.module.css';
-
 import { getHistory } from '../../services/historyServices';
+import toast, { Toaster } from 'react-hot-toast';
 const History = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(20);
+    const [itemsPerPage] = useState(10);
     const [items, setItems] = useState([]);
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -21,14 +21,23 @@ const History = () => {
     };
     useEffect(() => {
         const handleGetHistory = async () => {
-            const list = await getHistory();
-            setItems(list.list);
+            try {
+                const result = await toast.promise(getHistory(), {
+                    loading: 'Завантаження історії...',
+                    success: 'Історію успішно завантажено!',
+                    error: 'Помилка при завантаженні історії',
+                });
+                setItems(result.list);
+            } catch (error) {
+                console.error('Помилка:', error);
+            }
         };
         handleGetHistory();
-    }, [items]);
+    }, []);
 
     return (
-        <>
+        <div className="content" style={{ flexDirection: 'column' }}>
+            <Toaster position="top-right" />
             <div className={style.tableContainer}>
                 <div className={style2.tableHeader}>
                     <div className={style.headerCell}>Сервіс</div>
@@ -53,7 +62,11 @@ const History = () => {
             <div className={style.pagination}>
                 {totalPages > 1 && (
                     <>
-                        <button onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))} disabled={currentPage === 1}>
+                        <button
+                            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                            disabled={currentPage === 1}
+                            style={{ fontWeight: 'bold' }}
+                        >
                             {currentPage === 1 ? '1' : currentPage - 1}
                         </button>
                     </>
@@ -65,7 +78,7 @@ const History = () => {
                     </button>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 export default History;

@@ -6,8 +6,9 @@ import { addSubscription, getServices } from '../../../services/subscriptionServ
 import { DatePicker, Input, InputNumber } from 'antd';
 import moment from 'moment';
 import yupValidation from '../../../validation/yupValidation';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, setValue } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import toast, { Toaster } from 'react-hot-toast';
 
 const CreateSubscriptionManual = () => {
     const { TextArea } = Input;
@@ -22,6 +23,7 @@ const CreateSubscriptionManual = () => {
     const {
         control,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm({
         defaultValues: {
@@ -51,17 +53,25 @@ const CreateSubscriptionManual = () => {
 
         fetchInitialData();
     }, []);
+    const handleValidationError = (errors) => {
+        toast.error('Будь ласка, перевірте поля на наявність помилок');
+    };
 
     const handleCreateSubscription = async (data) => {
         try {
             await addSubscription(data);
+            toast.success('Підписку додано успішно!');
         } catch (error) {
-            console.error('Помилка при додаванні підписки:', error);
+            toast.error('Щось пішло не так!');
         }
     };
 
     return (
-        <AddSubscriptionTemplate onSubmit={handleSubmit(handleCreateSubscription)} submitTitle={'Додати підписку'}>
+        <AddSubscriptionTemplate
+            onSubmit={handleSubmit(handleCreateSubscription, handleValidationError)}
+            submitTitle={'Додати підписку'}
+        >
+            <Toaster position="top-right" />
             <h3>Додавання підписки власноруч</h3>
             <div style={{ width: '100%' }}>
                 <Controller
@@ -80,6 +90,8 @@ const CreateSubscriptionManual = () => {
                                 const selectedService = services.find((s) => s.name === value);
                                 if (selectedService) {
                                     field.onChange(value);
+                                    setValue('category', selectedService.category);
+                                    setValue('logo', selectedService.logo);
                                     field.onBlur();
                                 }
                             }}

@@ -22,7 +22,7 @@ export default function Registartion() {
         console.log('Submitted data:', data);
         try {
             setLoading(true);
-            await register(data.username, data.email, data.password);
+            await register(data.email, data.password);
             navigate('/');
         } catch (err) {
             console.error('Помилка реєстрації:', err.response?.data || err.message);
@@ -37,22 +37,6 @@ export default function Registartion() {
                 <div className={s.authContainer}>
                     <form onSubmit={handleSubmit(handleRegister)} className={s.authColumn}>
                         <h1>Реєстрація</h1>
-                        <div>
-                            <p>Nickname</p>
-                            <Controller
-                                control={control}
-                                name="username"
-                                render={({ field: { onChange, value } }) => (
-                                    <input
-                                        className={s.authInputContainer}
-                                        type="text"
-                                        value={value || ''}
-                                        onChange={onChange}
-                                    />
-                                )}
-                            />
-                            {errors.nickname && <p className="error-text">{errors.nickname.message}</p>}
-                        </div>
                         <div>
                             <p>Email</p>
                             <Controller
@@ -84,6 +68,23 @@ export default function Registartion() {
                                 )}
                             />
                             {errors.password && <p className="error-text">{errors.password.message}</p>}
+                        </div>
+
+                        <div>
+                            <p>ConfirmPassword</p>
+                            <Controller
+                                control={control}
+                                name="confirmPassword"
+                                render={({ field: { onChange, value } }) => (
+                                    <input
+                                        className={s.authInputContainer}
+                                        type="password"
+                                        value={value || ''}
+                                        onChange={onChange}
+                                    />
+                                )}
+                            />
+                            {errors.password && <p className="error-text">{errors.confirmPassword.message}</p>}
                         </div>
                         <CustomButton type="submit" loading={loading} text="Зареєструватися" />
                         <p style={{ fontSize: 20 }}>Або</p>
