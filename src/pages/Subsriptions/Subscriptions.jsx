@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { TextField } from '@prismane/core';
 import { checkToken } from '../../services/monobankApiServices.js';
 import { setMonobankToken } from '../../services/authSlice.js';
-
+import LoadingScreen from '../../components/LoadingScreen/LoadingScreen.jsx';
 const Subscriptions = () => {
     const [modalWindowIsOpen, setModalWindowOpen] = useState(false);
     const [modalContentType, setModalContentType] = useState(null);
@@ -74,7 +74,7 @@ const Subscriptions = () => {
 
     const categories = [...new Set(subscriptions.map((sub) => sub.category).filter(Boolean))];
 
-    if (status === 'loading') return <p>Завантаження...</p>;
+    if (status === 'loading') return <LoadingScreen />;
     if (status === 'failed') return <p>Помилка при завантаженні підписок.</p>;
 
     return (

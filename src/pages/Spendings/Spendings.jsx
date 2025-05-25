@@ -4,7 +4,7 @@ import InfoList from '../../components/InfoList/InfoList';
 import { getSpendings } from '../../services/subscriptionServices';
 import CustomDropdown from '../../components/Dropdown/Dropdown';
 import * as style from '../../components/Charts/SpendingChart.module.css';
-
+import toast, { Toaster } from 'react-hot-toast';
 const Spendings = () => {
     const [loading, setLoading] = useState(false);
     const [spendings, setSpendings] = useState([]);
@@ -15,8 +15,12 @@ const Spendings = () => {
         const handleGetSpendings = async () => {
             setLoading(true);
             try {
-                const apiData = await getSpendings();
-                setSpendings(apiData.data);
+                const result = await toast.promise(getSpendings(), {
+                    loading: 'Завантаження витрат...',
+                    success: 'Витрати успішно завантажено!',
+                    error: 'Помилка при завантаженні витрат',
+                });
+                setSpendings(result.data);
             } catch (error) {
                 console.error('Помилка при отриманні списку витрат:', error);
             } finally {
@@ -33,6 +37,7 @@ const Spendings = () => {
 
     return (
         <div className="content" style={{ flexDirection: 'column', marginBottom: '40px' }}>
+            <Toaster position="top-right" />
             <p>Витрати</p>
             <div className={style.topRow}>
                 <div className={style.buttonContainer}>

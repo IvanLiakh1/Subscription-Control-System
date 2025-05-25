@@ -10,6 +10,7 @@ import GoogleButton from '../components/GoogleButton/GoogleButton.jsx';
 function App() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [errorMSG, setErrorMSG] = useState(null);
     const {
         control,
         handleSubmit,
@@ -24,7 +25,7 @@ function App() {
             await login(data.email, data.password);
             navigate('/');
         } catch (err) {
-            console.log(err);
+            setErrorMSG(err.response.data.error);
         } finally {
             setLoading(false);
         }
@@ -36,6 +37,7 @@ function App() {
                 <div className={s.authContainer}>
                     <form onSubmit={handleSubmit(handleLogin)} className={s.authColumn}>
                         <h1>Вхід</h1>
+                        {errorMSG && <p className="error-text">{errorMSG}</p>}
                         <div>
                             <p>Email</p>
                             <Controller

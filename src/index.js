@@ -12,12 +12,12 @@ import store from './services/store';
 import { checkSession, selectAuthInitialized, selectIsAuthenticated } from './services/authSlice';
 import CreateSubscriptionManual from './pages/Subsriptions/ManuallAdd/CreateSubscriptionManual';
 import CreateSubscriptionAuto from './pages/Subsriptions/AutoAdd/AutoAdd.jsx';
-import { PrismaneProvider, Loader, Flex } from '@prismane/core';
+import { PrismaneProvider } from '@prismane/core';
 import Spendings from './pages/Spendings/Spendings';
 import EditSubscription from './pages/Subsriptions/EditSubscription/EditSubscription.jsx';
 import Settings from './pages/Settings/Settings.jsx';
 import History from './pages/History/History.jsx';
-import toast, { Toaster } from 'react-hot-toast';
+import LoadingScreen from './components/LoadingScreen/LoadingScreen.jsx';
 const InitApp = ({ children }) => {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -26,12 +26,6 @@ const InitApp = ({ children }) => {
 
     return children;
 };
-
-const LoadingScreen = () => (
-    <Flex w="100vw" h="100vh" align="center" justify="center">
-        <h1>Завантаження...</h1>
-    </Flex>
-);
 
 const LayoutWithHeader = () => (
     <>

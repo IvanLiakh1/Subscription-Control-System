@@ -12,6 +12,7 @@ const config = {
         path: path.resolve(__dirname, '../dist'),
         filename: 'app.js',
         clean: true,
+        publicPath: '/',
     },
     plugins: [
         new HtmlWebpackPlugin({

@@ -11,6 +11,7 @@ import GoogleButton from '../components/GoogleButton/GoogleButton';
 export default function Registartion() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const [errorMSG, setErrorMSG] = useState(null);
     const {
         control,
         handleSubmit,
@@ -25,7 +26,7 @@ export default function Registartion() {
             await register(data.email, data.password);
             navigate('/');
         } catch (err) {
-            console.error('Помилка реєстрації:', err.response?.data || err.message);
+            setErrorMSG(err.response.data.error);
         } finally {
             setLoading(false);
         }
@@ -37,6 +38,7 @@ export default function Registartion() {
                 <div className={s.authContainer}>
                     <form onSubmit={handleSubmit(handleRegister)} className={s.authColumn}>
                         <h1>Реєстрація</h1>
+                        {errorMSG && <p className="error-text">{errorMSG}</p>}
                         <div>
                             <p>Email</p>
                             <Controller
